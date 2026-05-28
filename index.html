@@ -29,8 +29,8 @@
       --green: #23884c;
       --gray: #697586;
       --sun: #b97908;
-      --shadow: 0 18px 45px rgba(15, 23, 42, .08);
-      --radius: 22px;
+      --shadow: 0 12px 34px rgba(15, 23, 42, .07);
+      --radius: 18px;
     }
 
     * { box-sizing: border-box; }
@@ -43,11 +43,11 @@
       background:
         radial-gradient(circle at top left, rgba(37, 99, 235, .12), transparent 34%),
         linear-gradient(180deg, #f8fbff 0%, var(--bg) 100%);
-      padding: 24px 16px;
+      padding: 18px 14px;
     }
 
     .wrap {
-      width: min(1180px, 100%);
+      width: min(1040px, 100%);
       margin: 0 auto;
     }
 
@@ -56,7 +56,7 @@
       border: 1px solid var(--line);
       border-radius: var(--radius);
       box-shadow: var(--shadow);
-      margin-bottom: 22px;
+      margin-bottom: 16px;
       overflow: hidden;
     }
 
@@ -76,12 +76,12 @@
     }
 
     .card-inner {
-      padding: 28px;
+      padding: 22px;
     }
 
     .section-title {
-      margin: 0 0 20px;
-      font-size: 26px;
+      margin: 0 0 16px;
+      font-size: 23px;
       line-height: 1.15;
       letter-spacing: -.03em;
       font-weight: 850;
@@ -90,9 +90,9 @@
 
     .input-grid {
       display: grid;
-      grid-template-columns: 1fr 260px 300px;
-      gap: 24px;
-      margin-bottom: 18px;
+      grid-template-columns: 1fr 220px 260px;
+      gap: 18px;
+      margin-bottom: 14px;
       align-items: end;
     }
 
@@ -103,20 +103,20 @@
     label {
       display: block;
       color: #344054;
-      font-size: 15px;
+      font-size: 13px;
       font-weight: 780;
-      margin-bottom: 10px;
+      margin-bottom: 8px;
     }
 
     input, select {
       width: 100%;
-      height: 58px;
+      height: 50px;
       border: 1px solid #cbd5e1;
-      border-radius: 12px;
-      padding: 0 16px;
+      border-radius: 10px;
+      padding: 0 14px;
       background: #fff;
       color: #111827;
-      font-size: 20px;
+      font-size: 18px;
       outline: none;
       transition: border .16s, box-shadow .16s;
     }
@@ -126,12 +126,12 @@
       box-shadow: 0 0 0 4px rgba(37, 99, 235, .12);
     }
 
-    .actions { margin-top: 18px; }
+    .actions { margin-top: 14px; }
 
     button {
       border: 0;
-      border-radius: 12px;
-      padding: 12px 18px;
+      border-radius: 10px;
+      padding: 10px 16px;
       cursor: pointer;
       background: #eef2f7;
       color: #111827;
@@ -141,18 +141,18 @@
 
     .result-list {
       display: grid;
-      gap: 12px;
+      gap: 10px;
     }
 
     .result-row {
       position: relative;
       display: grid;
-      grid-template-columns: 260px minmax(0, 1fr) 160px;
-      gap: 24px;
+      grid-template-columns: 220px minmax(0, 1fr) 140px;
+      gap: 18px;
       align-items: center;
-      min-height: 86px;
-      padding: 18px 20px 18px 24px;
-      border-radius: 14px;
+      min-height: 72px;
+      padding: 14px 16px 14px 20px;
+      border-radius: 12px;
       overflow: hidden;
       cursor: pointer;
       transition: transform .16s, box-shadow .16s;
@@ -196,23 +196,23 @@
 
     .result-name {
       color: var(--muted);
-      font-size: 17px;
+      font-size: 15px;
       line-height: 1.15;
       font-weight: 850;
       white-space: nowrap;
     }
 
     .result-hint {
-      margin-top: 7px;
+      margin-top: 5px;
       color: var(--muted);
-      font-size: 13px;
+      font-size: 12px;
       font-weight: 600;
       white-space: nowrap;
     }
 
     .result-value {
       color: #111827;
-      font-size: 20px;
+      font-size: 18px;
       line-height: 1.35;
       font-weight: 780;
       word-break: break-word;
@@ -223,14 +223,14 @@
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      min-width: 148px;
-      height: 52px;
-      padding: 0 18px;
+      min-width: 126px;
+      height: 44px;
+      padding: 0 14px;
       border: 1px solid currentColor;
       border-radius: 10px;
       background: rgba(255, 255, 255, .72);
       color: currentColor;
-      font-size: 17px;
+      font-size: 15px;
       font-weight: 850;
       user-select: none;
     }
@@ -243,12 +243,12 @@
       grid-template-columns: 36px 1fr;
       gap: 18px;
       align-items: start;
-      padding: 24px 28px;
-      border-radius: 18px;
+      padding: 18px 22px;
+      border-radius: 16px;
       background: linear-gradient(135deg, #eef7ff, #f8fbff);
       color: #334155;
       border: 1px solid rgba(37, 99, 235, .08);
-      margin-bottom: 22px;
+      margin-bottom: 16px;
     }
 
     .info-icon {
@@ -265,30 +265,30 @@
     .info h2 {
       margin: 0 0 8px;
       color: var(--text);
-      font-size: 22px;
+      font-size: 19px;
     }
 
     .info p {
       margin: 0;
       color: #475569;
-      font-size: 16px;
-      line-height: 1.55;
+      font-size: 15px;
+      line-height: 1.5;
     }
 
     .footer {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
-      gap: 20px;
-      padding: 4px 10px 18px;
+      gap: 16px;
+      padding: 2px 8px 12px;
       color: #64748b;
-      font-size: 14px;
+      font-size: 13px;
       line-height: 1.45;
     }
 
     .footer-item {
       display: flex;
       align-items: center;
-      gap: 12px;
+      gap: 10px;
     }
 
     .footer-icon {
@@ -303,6 +303,14 @@
       flex: 0 0 auto;
     }
 
+
+    @media (min-width: 961px) {
+      .hero-card img {
+        max-height: 240px;
+        object-fit: cover;
+      }
+    }
+
     @media (max-width: 960px) {
       .input-grid,
       .input-grid.second {
@@ -312,7 +320,7 @@
 
       .result-row {
         grid-template-columns: 1fr;
-        gap: 12px;
+        gap: 10px;
         align-items: start;
       }
 
@@ -332,12 +340,12 @@
 
     @media (max-width: 560px) {
       body { padding: 12px; }
-      .card { border-radius: 18px; }
-      .hero-card img { border-radius: 18px; }
+      .card { border-radius: 16px; }
+      .hero-card img { border-radius: 16px; }
       .card-inner { padding: 20px 16px; }
       input, select { height: 56px; font-size: 18px; }
       .section-title { font-size: 24px; }
-      .result-value { font-size: 17px; }
+      .result-value { font-size: 15px; }
       .result-name { font-size: 16px; }
       .info { grid-template-columns: 1fr; padding: 20px 16px; }
     }
