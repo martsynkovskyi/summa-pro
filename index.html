@@ -6,6 +6,8 @@
   <title>Сумма прописью</title>
 
   <meta name="description" content="Написание суммы прописью для ставок НДС 22%, 5% и не облагается">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' data:; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline'; connect-src 'self'; font-src 'self'; object-src 'none'; base-uri 'self'; form-action 'none'; upgrade-insecure-requests">
+  <meta name="referrer" content="strict-origin-when-cross-origin">
   <meta property="og:title" content="Сумма прописью">
   <meta property="og:description" content="Написание суммы прописью для ставок НДС 22%, 5% и не облагается">
   <meta property="og:type" content="website">
@@ -497,7 +499,7 @@
     <div class="footer">
       <div class="footer-item">
         <div class="footer-icon">©</div>
-        <div>Версия 2.0 (27.05.2026)<br>Александр Марцынковский</div>
+        <div>Версия 2.1 (28.05.2026)<br>Александр Марцынковский</div>
       </div>
 
       <div class="footer-item">
@@ -530,15 +532,30 @@
 
     const storageKey = 'summaPropisyuSettingsV2';
 
+    const allowedSettings = {
+      rate: ['22', '5'],
+      mode: ['included', 'above', 'none'],
+      format: ['f1', 'f2', 'f3', 'f4'],
+      vatReason: ['usn', 'npd', 'person']
+    };
+
+    function isAllowed(key, value) {
+      return allowedSettings[key] && allowedSettings[key].includes(value);
+    }
+
+    function sanitizeSavedAmount(value) {
+      return String(value || '').slice(0, 32).replace(/[^0-9.,\s]/g, '');
+    }
+
     function loadSettings() {
       try {
         const saved = JSON.parse(localStorage.getItem(storageKey) || '{}');
 
-        if (saved.amount !== undefined) amountInput.value = saved.amount;
-        if (saved.rate) rateSelect.value = saved.rate;
-        if (saved.mode) modeSelect.value = saved.mode;
-        if (saved.format) formatSelect.value = saved.format;
-        if (saved.vatReason) vatReasonSelect.value = saved.vatReason;
+        if (saved.amount !== undefined) amountInput.value = sanitizeSavedAmount(saved.amount);
+        if (isAllowed('rate', saved.rate)) rateSelect.value = saved.rate;
+        if (isAllowed('mode', saved.mode)) modeSelect.value = saved.mode;
+        if (isAllowed('format', saved.format)) formatSelect.value = saved.format;
+        if (isAllowed('vatReason', saved.vatReason)) vatReasonSelect.value = saved.vatReason;
       } catch (e) {}
     }
 
