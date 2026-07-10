@@ -1,848 +1,395 @@
 <!doctype html>
 <html lang="ru">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <title>Сумма прописью</title>
-
-  <meta name="description" content="Написание суммы прописью для ставок НДС 22%, 5% и не облагается">
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' data:; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline'; connect-src 'self'; font-src 'self'; object-src 'none'; base-uri 'self'; form-action 'none'; upgrade-insecure-requests">
+  <meta name="description" content="Расчёт НДС и написание суммы прописью для договоров, актов и счетов">
   <meta name="referrer" content="strict-origin-when-cross-origin">
+  <meta name="theme-color" content="#0f3d91">
+  <meta name="application-name" content="Сумма прописью">
+  <meta name="apple-mobile-web-app-title" content="Сумма прописью">
+  <meta name="color-scheme" content="light">
+
   <meta property="og:title" content="Сумма прописью">
-  <meta property="og:description" content="Написание суммы прописью для ставок НДС 22%, 5% и не облагается">
+  <meta property="og:description" content="Расчёт НДС и готовые формулировки для договоров, актов и счетов">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://summa.martsynkovskyi.ru/">
-  <meta property="og:image" content="https://summa.martsynkovskyi.ru/preview.jpeg">
+  <meta property="og:image" content="https://summa.martsynkovskyi.ru/preview-v2.2.png">
+  <meta property="og:image:secure_url" content="https://summa.martsynkovskyi.ru/preview-v2.2.png">
+  <meta property="og:image:type" content="image/png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Сервис Сумма прописью: расчёт НДС 22%, 5% и без НДС">
+
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="Сумма прописью">
-  <meta name="twitter:description" content="Написание суммы прописью для ставок НДС 22%, 5% и не облагается">
-  <meta name="twitter:image" content="https://summa.martsynkovskyi.ru/preview.jpeg">
+  <meta name="twitter:description" content="Расчёт НДС и готовые формулировки для договоров, актов и счетов">
+  <meta name="twitter:image" content="https://summa.martsynkovskyi.ru/preview-v2.2.png">
 
-  <link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A//www.w3.org/2000/svg%27%20viewBox%3D%270%200%2064%2064%27%3E%3Crect%20width%3D%2764%27%20height%3D%2764%27%20rx%3D%2716%27%20fill%3D%27%232563eb%27/%3E%3Ctext%20x%3D%2750%25%27%20y%3D%2755%25%27%20dominant-baseline%3D%27middle%27%20text-anchor%3D%27middle%27%20font-family%3D%27Arial%27%20font-size%3D%2734%27%20font-weight%3D%27700%27%20fill%3D%27white%27%3E%E2%82%BD%3C/text%3E%3C/svg%3E">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' data:; font-src 'self'; style-src 'self'; script-src 'self'; connect-src 'none'; object-src 'none'; base-uri 'self'; form-action 'none'">
 
-  <style>
-    :root {
-      --bg: #f5f8fc;
-      --card: #ffffff;
-      --text: #111827;
-      --muted: #667085;
-      --line: #dbe3ee;
-      --blue: #2563eb;
-      --green: #23884c;
-      --gray: #697586;
-      --sun: #b97908;
-      --shadow: 0 12px 34px rgba(15, 23, 42, .07);
-      --radius: 18px;
-    }
-
-    * { box-sizing: border-box; }
-
-    body {
-      margin: 0;
-      min-height: 100vh;
-      font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      color: var(--text);
-      background:
-        radial-gradient(circle at top left, rgba(37, 99, 235, .12), transparent 34%),
-        linear-gradient(180deg, #f8fbff 0%, var(--bg) 100%);
-      padding: 18px 14px;
-    }
-
-    .wrap {
-      width: min(1040px, 100%);
-      margin: 0 auto;
-    }
-
-    .card {
-      background: rgba(255, 255, 255, .94);
-      border: 1px solid var(--line);
-      border-radius: var(--radius);
-      box-shadow: var(--shadow);
-      margin-bottom: 16px;
-      overflow: hidden;
-    }
-
-    .hero-card {
-      padding: 0;
-      background: transparent;
-      line-height: 0;
-    }
-
-    .hero-card img {
-      display: block;
-      width: 100%;
-      height: auto;
-      border-radius: var(--radius);
-      object-fit: cover;
-      vertical-align: top;
-    }
-
-    .card-inner {
-      padding: 22px;
-    }
-
-    .section-title {
-      margin: 0 0 16px;
-      font-size: 23px;
-      line-height: 1.15;
-      letter-spacing: -.03em;
-      font-weight: 850;
-      color: #0b1736;
-    }
-
-    .input-grid {
-      display: grid;
-      grid-template-columns: 1fr 220px 260px;
-      gap: 18px;
-      margin-bottom: 14px;
-      align-items: end;
-    }
-
-    .input-grid.second {
-      grid-template-columns: 1fr 1fr;
-    }
-
-    label {
-      display: block;
-      color: #344054;
-      font-size: 13px;
-      font-weight: 780;
-      margin-bottom: 8px;
-    }
-
-    input, select {
-      width: 100%;
-      height: 50px;
-      border: 1px solid #cbd5e1;
-      border-radius: 10px;
-      padding: 0 14px;
-      background: #fff;
-      color: #111827;
-      font-size: 18px;
-      outline: none;
-      transition: border .16s, box-shadow .16s;
-    }
-
-    input:focus, select:focus {
-      border-color: var(--blue);
-      box-shadow: 0 0 0 4px rgba(37, 99, 235, .12);
-    }
-
-    .actions { margin-top: 14px; }
-
-    button {
-      border: 0;
-      border-radius: 10px;
-      padding: 10px 16px;
-      cursor: pointer;
-      background: #eef2f7;
-      color: #111827;
-      font-size: 15px;
-      font-weight: 780;
-    }
-
-    .result-list {
-      display: grid;
-      gap: 10px;
-    }
-
-    .result-row {
-      position: relative;
-      display: grid;
-      grid-template-columns: 220px minmax(0, 1fr) 140px;
-      gap: 18px;
-      align-items: center;
-      min-height: 72px;
-      padding: 14px 16px 14px 20px;
-      border-radius: 12px;
-      overflow: hidden;
-      cursor: pointer;
-      transition: transform .16s, box-shadow .16s;
-      border: 1px solid rgba(255,255,255,.55);
-    }
-
-    .result-row::before {
-      content: "";
-      position: absolute;
-      left: 0;
-      top: 0;
-      bottom: 0;
-      width: 5px;
-      background: currentColor;
-    }
-
-    .result-row:hover {
-      transform: translateY(-1px);
-      box-shadow: 0 12px 28px rgba(15, 23, 42, .07);
-    }
-
-    .result-row.blue {
-      color: var(--blue);
-      background: linear-gradient(90deg, rgba(37, 99, 235, .12), rgba(37, 99, 235, .035));
-    }
-
-    .result-row.green {
-      color: var(--green);
-      background: linear-gradient(90deg, rgba(35, 136, 76, .12), rgba(35, 136, 76, .035));
-    }
-
-    .result-row.gray {
-      color: var(--gray);
-      background: linear-gradient(90deg, rgba(105, 117, 134, .14), rgba(105, 117, 134, .035));
-    }
-
-    .result-row.sun {
-      color: var(--sun);
-      background: linear-gradient(90deg, rgba(245, 158, 11, .16), rgba(245, 158, 11, .045));
-    }
-
-    .result-name {
-      color: var(--muted);
-      font-size: 15px;
-      line-height: 1.15;
-      font-weight: 850;
-      white-space: nowrap;
-    }
-
-    .result-hint {
-      margin-top: 5px;
-      color: var(--muted);
-      font-size: 12px;
-      font-weight: 600;
-      white-space: nowrap;
-    }
-
-    .result-value {
-      color: #111827;
-      font-size: 18px;
-      line-height: 1.35;
-      font-weight: 780;
-      word-break: break-word;
-    }
-
-    .copy-btn {
-      justify-self: end;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      min-width: 126px;
-      height: 44px;
-      padding: 0 14px;
-      border: 1px solid currentColor;
-      border-radius: 10px;
-      background: rgba(255, 255, 255, .72);
-      color: currentColor;
-      font-size: 15px;
-      font-weight: 850;
-      user-select: none;
-    }
-
-    .result-row.copied .copy-btn span { display: none; }
-    .result-row.copied .copy-btn::after { content: "Скопировано"; }
-
-    .info {
-      display: grid;
-      grid-template-columns: 36px 1fr;
-      gap: 18px;
-      align-items: start;
-      padding: 18px 22px;
-      border-radius: 16px;
-      background: linear-gradient(135deg, #eef7ff, #f8fbff);
-      color: #334155;
-      border: 1px solid rgba(37, 99, 235, .08);
-      margin-bottom: 16px;
-    }
-
-    .info-icon {
-      width: 30px;
-      height: 30px;
-      border-radius: 50%;
-      background: var(--blue);
-      color: #fff;
-      display: grid;
-      place-items: center;
-      font-weight: 900;
-    }
-
-    .info h2 {
-      margin: 0 0 8px;
-      color: var(--text);
-      font-size: 19px;
-    }
-
-    .info p {
-      margin: 0;
-      color: #475569;
-      font-size: 15px;
-      line-height: 1.5;
-    }
-
-    .footer {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 16px;
-      padding: 2px 8px 12px;
-      color: #64748b;
-      font-size: 13px;
-      line-height: 1.45;
-    }
-
-    .footer-item {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-
-    .footer-icon {
-      width: 32px;
-      height: 32px;
-      display: grid;
-      place-items: center;
-      border-radius: 50%;
-      background: #eef6ff;
-      color: var(--blue);
-      font-size: 18px;
-      flex: 0 0 auto;
-    }
-
-
-    @media (min-width: 961px) {
-      .hero-card img {
-        max-height: 240px;
-        object-fit: cover;
-      }
-    }
-
-    @media (max-width: 960px) {
-      .input-grid,
-      .input-grid.second {
-        grid-template-columns: 1fr;
-        gap: 16px;
-      }
-
-      .result-row {
-        grid-template-columns: 1fr;
-        gap: 10px;
-        align-items: start;
-      }
-
-      .copy-btn {
-        width: 100%;
-      }
-
-      .result-name,
-      .result-hint {
-        white-space: normal;
-      }
-
-      .footer {
-        grid-template-columns: 1fr;
-      }
-    }
-
-    @media (max-width: 560px) {
-      body { padding: 12px; }
-      .card { border-radius: 16px; }
-      .hero-card img { border-radius: 16px; }
-      .card-inner { padding: 20px 16px; }
-      input, select { height: 56px; font-size: 18px; }
-      .section-title { font-size: 24px; }
-      .result-value { font-size: 15px; }
-      .result-name { font-size: 16px; }
-      .info { grid-template-columns: 1fr; padding: 20px 16px; }
-    }
-  
-    @media (max-width: 760px) {
-      .hero-card img {
-        min-height: 0;
-        object-fit: contain;
-      }
-
-      .result-row {
-        padding: 16px;
-      }
-
-      .result-value {
-        font-size: 16px;
-        line-height: 1.4;
-      }
-
-      .copy-btn {
-        min-width: 100%;
-      }
-    }
-
-</style>
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="apple-touch-icon.png">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="preload" href="fonts/GolosText-Regular.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="fonts/GolosText-SemiBold.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="assets/styles.css">
+  <script src="assets/app.js" defer></script>
 </head>
 <body>
-  <main class="wrap">
-    <section class="card hero-card" aria-label="Сумма прописью">
-      <img src="hero.png" alt="Сумма прописью">
-    </section>
+  <div class="app-shell">
+    <header class="hero" aria-labelledby="siteTitle">
+      <div class="hero-brand" aria-hidden="true">
+        <span>₽</span>
+      </div>
 
-    <section class="card">
-      <div class="card-inner">
-        <h1 class="section-title">Ввод данных</h1>
-
-        <div class="input-grid">
-          <div>
-            <label for="amount">Сумма</label>
-            <input id="amount" inputmode="decimal" autocomplete="off" placeholder="Например, 45000" value="0" />
-          </div>
-
-          <div>
-            <label for="rate">Ставка НДС</label>
-            <select id="rate">
-              <option value="22" selected>22%</option>
-              <option value="5">5%</option>
-            </select>
-          </div>
-
-          <div>
-            <label for="mode">Режим</label>
-            <select id="mode">
-              <option value="included">НДС включен</option>
-              <option value="above" selected>НДС сверху</option>
-              <option value="none">НДС не облагается</option>
-            </select>
-          </div>
-        </div>
-
-        <div class="input-grid second">
-          <div>
-            <label for="format">Формат суммы прописью</label>
-            <select id="format">
-              <option value="f1">100 (Сто) рублей 00 копеек</option>
-              <option value="f2">100,00 (Сто рублей 00 копеек)</option>
-              <option value="f3">100,00 руб. (Сто рублей 00 копеек)</option>
-              <option value="f4">100 рублей 00 копеек (Сто рублей 00 копеек)</option>
-            </select>
-          </div>
-
-          <div>
-            <label for="vatReason">Обоснование “НДС не облагается”</label>
-            <select id="vatReason">
-              <option value="usn">ЮЛ / ИП на УСН, п. 1 ст. 145 НК РФ</option>
-              <option value="npd">Самозанятый, НПД</option>
-              <option value="person">Физическое лицо</option>
-            </select>
-          </div>
-        </div>
-
-        <div class="actions">
-          <button type="button" id="resetBtn">Очистить</button>
+      <div class="hero-copy">
+        <p class="hero-kicker">Финансовый инструмент</p>
+        <h1 id="siteTitle">Сумма прописью</h1>
+        <p class="hero-subtitle">Расчёт НДС и готовые формулировки для договоров, актов и счетов</p>
+        <div class="hero-tags" aria-label="Поддерживаемые варианты">
+          <span class="hero-tag hero-tag-blue">22% НДС</span>
+          <span class="hero-tag hero-tag-green">5% НДС</span>
+          <span class="hero-tag hero-tag-gray">Без НДС</span>
         </div>
       </div>
-    </section>
 
-    <section class="card">
-      <div class="card-inner">
-        <h1 class="section-title">Результат</h1>
+      <div class="hero-visual" aria-hidden="true">
+        <div class="hero-words-card">
+          <span class="hero-words-label">Сумма прописью</span>
+          <strong>Четыре миллиона пятьсот шестьдесят семь тысяч…</strong>
+        </div>
 
-        <div class="result-list">
-          <div class="result-row blue copy-row" data-copy="base" tabindex="0" role="button" aria-label="Скопировать сумму без НДС">
-            <div>
-              <div class="result-name">Сумма без НДС</div>
-              <div class="result-hint">нажмите, чтобы скопировать</div>
-            </div>
-            <div class="result-value" id="baseLine">0 рублей 00 копеек</div>
-            <div class="copy-btn"><span>Копировать</span></div>
+        <div class="hero-calculator">
+          <div class="hero-calculator-display">
+            <span>Итого</span>
+            <strong>4 567 894,45 ₽</strong>
           </div>
-
-          <div class="result-row green copy-row" data-copy="vat" tabindex="0" role="button" aria-label="Скопировать НДС">
-            <div>
-              <div class="result-name">НДС</div>
-              <div class="result-hint">нажмите, чтобы скопировать</div>
-            </div>
-            <div class="result-value" id="vatLine">0 рублей 00 копеек</div>
-            <div class="copy-btn"><span>Копировать</span></div>
+          <div class="hero-calculator-summary">
+            <div><span>Без НДС</span><b>3 744 175,78</b></div>
+            <div><span>НДС 22%</span><b>823 718,67</b></div>
           </div>
-
-          <div class="result-row gray copy-row" data-copy="total" tabindex="0" role="button" aria-label="Скопировать сумму с НДС">
-            <div>
-              <div class="result-name">Сумма с НДС</div>
-              <div class="result-hint">нажмите, чтобы скопировать</div>
-            </div>
-            <div class="result-value" id="totalLine">0 рублей 00 копеек</div>
-            <div class="copy-btn"><span>Копировать</span></div>
-          </div>
-
-          <div class="result-row sun" id="fullLine" tabindex="0" role="button" aria-label="Скопировать сумму в том числе с НДС">
-            <div>
-              <div class="result-name">Сумма "в том числе с НДС"</div>
-              <div class="result-hint">нажмите, чтобы скопировать</div>
-            </div>
-            <div class="result-value" id="fullLineText"></div>
-            <div class="copy-btn"><span>Копировать</span></div>
-          </div>
-
-          <div class="result-row sun" id="aboveLine" tabindex="0" role="button" aria-label="Скопировать сумму кроме того НДС">
-            <div>
-              <div class="result-name">Сумма "кроме того НДС"</div>
-              <div class="result-hint">нажмите, чтобы скопировать</div>
-            </div>
-            <div class="result-value" id="aboveLineText"></div>
-            <div class="copy-btn"><span>Копировать</span></div>
+          <div class="hero-calculator-keys">
+            <i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i class="key-accent"></i>
           </div>
         </div>
       </div>
+    </header>
+
+    <main class="workspace">
+      <section class="panel input-panel" aria-labelledby="parametersTitle">
+        <div class="panel-header">
+          <div class="panel-title-group">
+            <span class="panel-icon panel-icon-blue" aria-hidden="true">
+              <svg viewBox="0 0 36 36">
+                <rect x="3" y="3" width="30" height="30" rx="10" fill="currentColor" opacity=".13"/>
+                <path d="M11 11h14v14H11z" fill="currentColor" opacity=".18"/>
+                <path d="M14 15h8M14 19h8M14 23h4" stroke="currentColor" stroke-width="2.3" stroke-linecap="round"/>
+                <circle cx="25.5" cy="25.5" r="5.5" fill="currentColor"/>
+                <path d="M25.5 22.4v6.2M22.4 25.5h6.2" stroke="#fff" stroke-width="1.8" stroke-linecap="round"/>
+              </svg>
+            </span>
+            <div>
+              <h2 id="parametersTitle">Параметры расчёта</h2>
+              <p>Введите сумму и выберите нужный способ начисления НДС.</p>
+            </div>
+          </div>
+
+          <div class="save-indicator" id="saveIndicator" data-state="idle" aria-live="polite">
+            <span class="save-dot" aria-hidden="true"></span>
+            <span id="saveStatusText">Черновик не изменён</span>
+          </div>
+        </div>
+
+        <form id="calculatorForm" novalidate autocomplete="off">
+          <fieldset class="form-section">
+            <legend>
+              <span class="section-number">1</span>
+              <span>
+                <strong>Сумма и НДС</strong>
+                <small>Исходные данные для расчёта</small>
+              </span>
+            </legend>
+
+            <div class="field field-wide">
+              <label for="amount">Сумма</label>
+              <div class="control-wrap amount-wrap">
+                <input id="amount" name="amount" inputmode="decimal" autocomplete="off" maxlength="32" placeholder="45 000,00" value="0" aria-describedby="amountHelp amountError">
+                <span class="currency-suffix" aria-hidden="true">₽</span>
+              </div>
+              <div class="field-meta">
+                <span id="amountHelp">Можно вводить с пробелами, точкой или запятой.</span>
+                <span class="field-error" id="amountError" role="alert"></span>
+              </div>
+            </div>
+
+            <div class="field field-wide">
+              <span class="field-label" id="modeLabel">Режим расчёта</span>
+              <div class="segmented-control mode-control" role="radiogroup" aria-labelledby="modeLabel">
+                <label class="segment-option">
+                  <input type="radio" name="mode" value="included">
+                  <span class="segment-content">
+                    <span class="segment-icon segment-icon-blue" aria-hidden="true">
+                      <svg viewBox="0 0 28 28"><circle cx="14" cy="14" r="11" fill="currentColor" opacity=".16"/><path d="M9.3 15.5h9.4M11 10.5h4.1a3 3 0 1 1 0 6H11v4" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                    </span>
+                    <span><strong>НДС включён</strong><small>Сумма уже содержит НДС</small></span>
+                  </span>
+                </label>
+
+                <label class="segment-option">
+                  <input type="radio" name="mode" value="above" checked>
+                  <span class="segment-content">
+                    <span class="segment-icon segment-icon-green" aria-hidden="true">
+                      <svg viewBox="0 0 28 28"><circle cx="14" cy="14" r="11" fill="currentColor" opacity=".16"/><path d="M9 14h10M14 9v10" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/></svg>
+                    </span>
+                    <span><strong>НДС сверху</strong><small>НДС добавляется к сумме</small></span>
+                  </span>
+                </label>
+
+                <label class="segment-option">
+                  <input type="radio" name="mode" value="none">
+                  <span class="segment-content">
+                    <span class="segment-icon segment-icon-gray" aria-hidden="true">
+                      <svg viewBox="0 0 28 28"><circle cx="14" cy="14" r="11" fill="currentColor" opacity=".16"/><path d="M9.5 14h9" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/></svg>
+                    </span>
+                    <span><strong>Без НДС</strong><small>НДС не начисляется</small></span>
+                  </span>
+                </label>
+              </div>
+            </div>
+
+            <div class="field field-wide" id="rateField">
+              <span class="field-label" id="rateLabel">Ставка НДС</span>
+              <div class="rate-switch" role="radiogroup" aria-labelledby="rateLabel">
+                <label class="rate-option rate-option-blue">
+                  <input type="radio" name="rate" value="22" checked>
+                  <span><strong>22%</strong><small>основная ставка</small></span>
+                </label>
+                <label class="rate-option rate-option-green">
+                  <input type="radio" name="rate" value="5">
+                  <span><strong>5%</strong><small>пониженная ставка</small></span>
+                </label>
+              </div>
+            </div>
+
+            <div class="field field-wide conditional-field" id="vatReasonField" hidden>
+              <label for="vatReason">Обоснование «НДС не облагается»</label>
+              <div class="control-wrap select-wrap">
+                <select id="vatReason" name="vatReason">
+                  <option value="usn">ЮЛ / ИП на УСН, п. 1 ст. 145 НК РФ</option>
+                  <option value="npd">Самозанятый, НПД</option>
+                  <option value="person">Физическое лицо</option>
+                </select>
+                <span class="select-icon" aria-hidden="true">
+                  <svg viewBox="0 0 20 20"><path d="m5 7.5 5 5 5-5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </span>
+              </div>
+            </div>
+          </fieldset>
+
+          <fieldset class="form-section form-section-last">
+            <legend>
+              <span class="section-number">2</span>
+              <span>
+                <strong>Формат текста</strong>
+                <small>Как будет выглядеть сумма в документе</small>
+              </span>
+            </legend>
+
+            <div class="field field-wide">
+              <label for="format">Формат суммы прописью</label>
+              <div class="control-wrap select-wrap">
+                <select id="format" name="format">
+                  <option value="f1">100 (Сто) рублей 00 копеек</option>
+                  <option value="f2">100,00 (Сто рублей 00 копеек)</option>
+                  <option value="f3">100,00 руб. (Сто рублей 00 копеек)</option>
+                  <option value="f4">100 рублей 00 копеек (Сто рублей 00 копеек)</option>
+                </select>
+                <span class="select-icon" aria-hidden="true">
+                  <svg viewBox="0 0 20 20"><path d="m5 7.5 5 5 5-5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </span>
+              </div>
+            </div>
+
+            <div class="format-preview" aria-live="polite">
+              <span class="format-preview-icon" aria-hidden="true">
+                <svg viewBox="0 0 32 32"><rect x="4" y="4" width="24" height="24" rx="8" fill="currentColor" opacity=".14"/><path d="M10 11h12M10 16h12M10 21h8" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg>
+              </span>
+              <div>
+                <small>Пример выбранного формата</small>
+                <strong id="formatExample">1 234 (Одна тысяча двести тридцать четыре) рубля 56 копеек</strong>
+              </div>
+            </div>
+          </fieldset>
+
+          <div class="form-actions">
+            <button class="button button-secondary" type="button" id="resetBtn">
+              <svg viewBox="0 0 28 28" aria-hidden="true"><circle cx="14" cy="14" r="10.5" fill="currentColor" opacity=".12"/><path d="M20 10.5V16h-5.5M19.2 16a7 7 0 1 1-1.1-7.9" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              <span>Очистить форму</span>
+            </button>
+          </div>
+
+          <div class="privacy-note">
+            <span class="privacy-icon" aria-hidden="true">
+              <svg viewBox="0 0 30 30"><path d="M15 3.5 25 7v7.3c0 6.3-4.1 10.2-10 12.2-5.9-2-10-5.9-10-12.2V7Z" fill="currentColor" opacity=".14"/><path d="M11.2 14.8 14 17.6l5.3-5.7" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </span>
+            <div>
+              <strong>Данные остаются на вашем устройстве</strong>
+              <span>Расчёт выполняется локально, без передачи информации на сервер.</span>
+            </div>
+          </div>
+        </form>
+      </section>
+
+      <section class="panel results-panel" aria-labelledby="resultsTitle">
+        <div class="panel-header results-header">
+          <div class="panel-title-group">
+            <span class="panel-icon panel-icon-green" aria-hidden="true">
+              <svg viewBox="0 0 36 36">
+                <rect x="3" y="3" width="30" height="30" rx="10" fill="currentColor" opacity=".13"/>
+                <path d="M9 13.5h18v11H9z" fill="currentColor" opacity=".18"/>
+                <path d="M12.5 17.2h11M12.5 21h7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/>
+                <circle cx="25.5" cy="11" r="5.5" fill="currentColor"/>
+                <path d="m23.2 11 1.6 1.7 3-3.2" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </span>
+            <div>
+              <h2 id="resultsTitle">Готовые результаты</h2>
+              <p>Нажмите на нужный блок, чтобы скопировать текст.</p>
+            </div>
+          </div>
+          <div class="calculation-badge" id="calculationBadge">НДС сверху · 22%</div>
+        </div>
+
+        <div class="summary-grid" aria-label="Итоги расчёта">
+          <article class="summary-card summary-card-blue copy-target" data-copy-key="base" tabindex="0" role="button" aria-label="Скопировать сумму без НДС">
+            <div class="summary-card-icon" aria-hidden="true">
+              <svg viewBox="0 0 42 42"><circle cx="21" cy="21" r="18" fill="currentColor" opacity=".13"/><ellipse cx="21" cy="15" rx="9" ry="4" fill="currentColor" opacity=".55"/><path d="M12 15v7c0 2.2 4 4 9 4s9-1.8 9-4v-7M12 22v5c0 2.2 4 4 9 4s9-1.8 9-4v-5" fill="none" stroke="currentColor" stroke-width="2"/></svg>
+            </div>
+            <div class="summary-card-copy" aria-hidden="true">
+              <svg viewBox="0 0 24 24"><rect x="8" y="8" width="11" height="11" rx="3" fill="currentColor" opacity=".18"/><rect x="5" y="5" width="11" height="11" rx="3" fill="none" stroke="currentColor" stroke-width="1.8"/></svg>
+            </div>
+            <span>Сумма без НДС</span>
+            <strong id="baseLine">0 (Ноль) рублей 00 копеек</strong>
+            <small>Нажмите, чтобы скопировать</small>
+          </article>
+
+          <article class="summary-card summary-card-green copy-target" data-copy-key="vat" tabindex="0" role="button" aria-label="Скопировать сумму НДС">
+            <div class="summary-card-icon" aria-hidden="true">
+              <svg viewBox="0 0 42 42"><circle cx="21" cy="21" r="18" fill="currentColor" opacity=".13"/><circle cx="16" cy="16" r="3.2" fill="none" stroke="currentColor" stroke-width="2.3"/><circle cx="26" cy="26" r="3.2" fill="none" stroke="currentColor" stroke-width="2.3"/><path d="m27.5 14.5-13 13" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/></svg>
+            </div>
+            <div class="summary-card-copy" aria-hidden="true">
+              <svg viewBox="0 0 24 24"><rect x="8" y="8" width="11" height="11" rx="3" fill="currentColor" opacity=".18"/><rect x="5" y="5" width="11" height="11" rx="3" fill="none" stroke="currentColor" stroke-width="1.8"/></svg>
+            </div>
+            <span>НДС</span>
+            <strong id="vatLine">0 (Ноль) рублей 00 копеек</strong>
+            <small>Нажмите, чтобы скопировать</small>
+          </article>
+
+          <article class="summary-card summary-card-slate copy-target" data-copy-key="total" tabindex="0" role="button" aria-label="Скопировать сумму с НДС">
+            <div class="summary-card-icon" aria-hidden="true">
+              <svg viewBox="0 0 42 42"><circle cx="21" cy="21" r="18" fill="currentColor" opacity=".13"/><rect x="11" y="13" width="20" height="17" rx="5" fill="currentColor" opacity=".22"/><path d="M12 18h18M17 23h8" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg>
+            </div>
+            <div class="summary-card-copy" aria-hidden="true">
+              <svg viewBox="0 0 24 24"><rect x="8" y="8" width="11" height="11" rx="3" fill="currentColor" opacity=".18"/><rect x="5" y="5" width="11" height="11" rx="3" fill="none" stroke="currentColor" stroke-width="1.8"/></svg>
+            </div>
+            <span>Сумма с НДС</span>
+            <strong id="totalLine">0 (Ноль) рублей 00 копеек</strong>
+            <small>Нажмите, чтобы скопировать</small>
+          </article>
+        </div>
+
+        <div class="phrase-section">
+          <div class="phrase-section-heading">
+            <div>
+              <h3>Формулировки для документов</h3>
+              <p>Готовый текст можно сразу вставить в договор, счёт или акт.</p>
+            </div>
+          </div>
+
+          <article class="phrase-card phrase-card-primary copy-target" id="fullLineCard" data-copy-key="full" tabindex="0" role="button" aria-label="Скопировать формулировку в том числе НДС">
+            <div class="phrase-card-top">
+              <div class="phrase-card-title">
+                <span class="phrase-icon" aria-hidden="true">
+                  <svg viewBox="0 0 36 36"><rect x="5" y="4" width="26" height="28" rx="8" fill="currentColor" opacity=".14"/><path d="M11 12h14M11 18h14M11 24h9" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/><circle cx="27" cy="27" r="6" fill="currentColor"/><path d="m24.5 27 1.7 1.7 3.2-3.4" stroke="#fff" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </span>
+                <div>
+                  <span class="phrase-kicker" id="fullLineKicker">Рекомендуемый вариант</span>
+                  <h4 id="fullLineTitle">Сумма «в том числе НДС»</h4>
+                </div>
+              </div>
+              <span class="copy-chip" aria-hidden="true">
+                <svg viewBox="0 0 24 24"><rect x="8" y="8" width="11" height="11" rx="3" fill="currentColor" opacity=".18"/><rect x="5" y="5" width="11" height="11" rx="3" fill="none" stroke="currentColor" stroke-width="1.8"/></svg>
+                <span>Копировать</span>
+              </span>
+            </div>
+            <p id="fullLineText"></p>
+          </article>
+
+          <article class="phrase-card copy-target" id="aboveLineCard" data-copy-key="above" tabindex="0" role="button" aria-label="Скопировать формулировку кроме того НДС">
+            <div class="phrase-card-top">
+              <div class="phrase-card-title">
+                <span class="phrase-icon phrase-icon-secondary" aria-hidden="true">
+                  <svg viewBox="0 0 36 36"><rect x="5" y="4" width="26" height="28" rx="8" fill="currentColor" opacity=".13"/><path d="M11 12h14M11 18h10M11 24h8" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/><circle cx="27" cy="27" r="6" fill="currentColor"/><path d="M24 27h6M27 24v6" stroke="#fff" stroke-width="1.7" stroke-linecap="round"/></svg>
+                </span>
+                <div>
+                  <span class="phrase-kicker" id="aboveLineKicker">Дополнительный вариант</span>
+                  <h4 id="aboveLineTitle">Сумма «кроме того НДС»</h4>
+                </div>
+              </div>
+              <span class="copy-chip" aria-hidden="true">
+                <svg viewBox="0 0 24 24"><rect x="8" y="8" width="11" height="11" rx="3" fill="currentColor" opacity=".18"/><rect x="5" y="5" width="11" height="11" rx="3" fill="none" stroke="currentColor" stroke-width="1.8"/></svg>
+                <span>Копировать</span>
+              </span>
+            </div>
+            <p id="aboveLineText"></p>
+          </article>
+        </div>
+      </section>
+    </main>
+
+    <section class="feature-strip" aria-label="Преимущества сервиса">
+      <article>
+        <span class="feature-icon feature-icon-blue" aria-hidden="true">
+          <svg viewBox="0 0 36 36"><rect x="4" y="4" width="28" height="28" rx="10" fill="currentColor" opacity=".13"/><path d="M11 12h14v12H11z" fill="currentColor" opacity=".2"/><path d="M14 16h8M14 20h5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+        </span>
+        <div><strong>4 формата записи</strong><span>Выберите вариант под нужный документ.</span></div>
+      </article>
+      <article>
+        <span class="feature-icon feature-icon-green" aria-hidden="true">
+          <svg viewBox="0 0 36 36"><rect x="4" y="4" width="28" height="28" rx="10" fill="currentColor" opacity=".13"/><circle cx="14" cy="14" r="3" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="22" cy="22" r="3" fill="none" stroke="currentColor" stroke-width="2"/><path d="m24 12-12 12" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg>
+        </span>
+        <div><strong>22%, 5% и без НДС</strong><span>Все основные сценарии расчёта в одном месте.</span></div>
+      </article>
+      <article>
+        <span class="feature-icon feature-icon-slate" aria-hidden="true">
+          <svg viewBox="0 0 36 36"><path d="M18 4 30 8.3v8.8c0 7.4-4.9 12-12 14.4-7.1-2.4-12-7-12-14.4V8.3Z" fill="currentColor" opacity=".14"/><path d="m12.5 18 3.4 3.4 7-7.4" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </span>
+        <div><strong>Без передачи данных</strong><span>Суммы рассчитываются и сохраняются только в браузере.</span></div>
+      </article>
     </section>
 
-    <section class="info">
-      <div class="info-icon">i</div>
-      <div>
-        <h2>Как это работает?</h2>
-        <p>Введите сумму, выберите ставку НДС и режим. Сервис автоматически рассчитывает суммы и готовые формулировки для вставки в договоры, счета и акты.</p>
-      </div>
-    </section>
-
-    <div class="footer">
+    <footer class="footer">
       <div class="footer-item">
-        <div class="footer-icon">©</div>
-        <div>Версия 2.1 (28.05.2026)<br>Александр Марцынковский</div>
+        <span class="footer-mark" aria-hidden="true">©</span>
+        <div>Версия 2.2 (10.07.2026)<br>Александр Марцынковский</div>
       </div>
-
-      <div class="footer-item">
-        <div class="footer-icon">✓</div>
-        <div>Данные сохраняются<br>в вашем браузере</div>
-      </div>
-
-      <div class="footer-item">
-        <div class="footer-icon">♡</div>
+      <div class="footer-item footer-item-center">
+        <span class="footer-heart" aria-hidden="true">
+          <svg viewBox="0 0 28 28"><path d="M14 23.5 5.2 15a6 6 0 0 1 8.5-8.5l.3.3.3-.3a6 6 0 0 1 8.5 8.5Z" fill="currentColor" opacity=".16"/><path d="M14 23.5 5.2 15a6 6 0 0 1 8.5-8.5l.3.3.3-.3a6 6 0 0 1 8.5 8.5Z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </span>
         <div>Сделано с заботой<br>для вашей работы</div>
       </div>
-    </div>
-  </main>
+      <a class="footer-domain" href="https://summa.martsynkovskyi.ru/">summa.martsynkovskyi.ru</a>
+    </footer>
+  </div>
 
-  <script>
-    const amountInput = document.getElementById('amount');
-    const rateSelect = document.getElementById('rate');
-    const modeSelect = document.getElementById('mode');
-    const formatSelect = document.getElementById('format');
-    const vatReasonSelect = document.getElementById('vatReason');
-    const baseLine = document.getElementById('baseLine');
-    const vatLine = document.getElementById('vatLine');
-    const totalLine = document.getElementById('totalLine');
-    const fullLine = document.getElementById('fullLine');
-    const fullLineText = document.getElementById('fullLineText');
-    const aboveLine = document.getElementById('aboveLine');
-    const aboveLineText = document.getElementById('aboveLineText');
-    const resetBtn = document.getElementById('resetBtn');
-    const copyRows = [...document.querySelectorAll('.copy-row')];
-
-    const storageKey = 'summaPropisyuSettingsV2';
-
-    const allowedSettings = {
-      rate: ['22', '5'],
-      mode: ['included', 'above', 'none'],
-      format: ['f1', 'f2', 'f3', 'f4'],
-      vatReason: ['usn', 'npd', 'person']
-    };
-
-    function isAllowed(key, value) {
-      return allowedSettings[key] && allowedSettings[key].includes(value);
-    }
-
-    function sanitizeSavedAmount(value) {
-      return String(value || '').slice(0, 32).replace(/[^0-9.,\s]/g, '');
-    }
-
-    function loadSettings() {
-      try {
-        const saved = JSON.parse(localStorage.getItem(storageKey) || '{}');
-
-        if (saved.amount !== undefined) amountInput.value = sanitizeSavedAmount(saved.amount);
-        if (isAllowed('rate', saved.rate)) rateSelect.value = saved.rate;
-        if (isAllowed('mode', saved.mode)) modeSelect.value = saved.mode;
-        if (isAllowed('format', saved.format)) formatSelect.value = saved.format;
-        if (isAllowed('vatReason', saved.vatReason)) vatReasonSelect.value = saved.vatReason;
-      } catch (e) {}
-    }
-
-    function saveSettings() {
-      const settings = {
-        amount: amountInput.value,
-        rate: rateSelect.value,
-        mode: modeSelect.value,
-        format: formatSelect.value,
-        vatReason: vatReasonSelect.value
-      };
-
-      localStorage.setItem(storageKey, JSON.stringify(settings));
-    }
-
-    const onesMale = ['', 'один', 'два', 'три', 'четыре', 'пять', 'шесть', 'семь', 'восемь', 'девять'];
-    const onesFemale = ['', 'одна', 'две', 'три', 'четыре', 'пять', 'шесть', 'семь', 'восемь', 'девять'];
-    const teens = ['десять', 'одиннадцать', 'двенадцать', 'тринадцать', 'четырнадцать', 'пятнадцать', 'шестнадцать', 'семнадцать', 'восемнадцать', 'девятнадцать'];
-    const tens = ['', '', 'двадцать', 'тридцать', 'сорок', 'пятьдесят', 'шестьдесят', 'семьдесят', 'восемьдесят', 'девяносто'];
-    const hundreds = ['', 'сто', 'двести', 'триста', 'четыреста', 'пятьсот', 'шестьсот', 'семьсот', 'восемьсот', 'девятьсот'];
-
-    let current = {
-      base: 0,
-      vat: 0,
-      total: 0,
-      texts: { base: '', vat: '', total: '', full: '', above: '' }
-    };
-
-    function parseAmount(value) {
-      const normalized = String(value).replace(/\s/g, '').replace(',', '.').replace(/[^0-9.]/g, '');
-      const number = Number(normalized);
-      return Number.isFinite(number) ? number : 0;
-    }
-
-    function round2(number) {
-      return Math.round((number + Number.EPSILON) * 100) / 100;
-    }
-
-    function plural(number, forms) {
-      number = Math.abs(number) % 100;
-      const n1 = number % 10;
-      if (number > 10 && number < 20) return forms[2];
-      if (n1 > 1 && n1 < 5) return forms[1];
-      if (n1 === 1) return forms[0];
-      return forms[2];
-    }
-
-    function triadToWords(number, gender) {
-      const words = [];
-      const h = Math.floor(number / 100);
-      const t = Math.floor((number % 100) / 10);
-      const o = number % 10;
-
-      if (hundreds[h]) words.push(hundreds[h]);
-
-      if (t === 1) {
-        words.push(teens[o]);
-      } else {
-        if (tens[t]) words.push(tens[t]);
-        const ones = gender === 'female' ? onesFemale : onesMale;
-        if (ones[o]) words.push(ones[o]);
-      }
-
-      return words.join(' ');
-    }
-
-    function integerToWords(number) {
-      if (number === 0) return 'ноль';
-
-      const units = [
-        { forms: ['', '', ''], gender: 'male' },
-        { forms: ['тысяча', 'тысячи', 'тысяч'], gender: 'female' },
-        { forms: ['миллион', 'миллиона', 'миллионов'], gender: 'male' },
-        { forms: ['миллиард', 'миллиарда', 'миллиардов'], gender: 'male' },
-        { forms: ['триллион', 'триллиона', 'триллионов'], gender: 'male' }
-      ];
-
-      const parts = [];
-      let i = 0;
-
-      while (number > 0 && i < units.length) {
-        const triad = number % 1000;
-        if (triad) {
-          const words = triadToWords(triad, units[i].gender);
-          const unit = units[i].forms[0] ? plural(triad, units[i].forms) : '';
-          parts.unshift([words, unit].filter(Boolean).join(' '));
-        }
-        number = Math.floor(number / 1000);
-        i++;
-      }
-
-      return parts.join(' ');
-    }
-
-    function splitMoney(amount) {
-      amount = round2(Math.max(0, amount));
-      const rubles = Math.floor(amount);
-      let kopecks = Math.round((amount - rubles) * 100);
-
-      if (kopecks === 100) {
-        return { rubles: rubles + 1, kopecks: 0 };
-      }
-
-      return { rubles, kopecks };
-    }
-
-    function cap(text) {
-      return text.charAt(0).toUpperCase() + text.slice(1);
-    }
-
-    function numRub(amount) {
-      const { rubles } = splitMoney(amount);
-      return new Intl.NumberFormat('ru-RU').format(rubles).replace(/\u00A0/g, ' ');
-    }
-
-    function numFull(amount) {
-      return new Intl.NumberFormat('ru-RU', {
-        minimumFractionDigits: 2,
-        maximumFractionDigits: 2
-      }).format(round2(amount)).replace(/\u00A0/g, ' ');
-    }
-
-    function wordsFull(amount, capitalize = true) {
-      const { rubles, kopecks } = splitMoney(amount);
-      const words = integerToWords(rubles);
-      const rubleWord = plural(rubles, ['рубль', 'рубля', 'рублей']);
-      const kopeckWord = plural(kopecks, ['копейка', 'копейки', 'копеек']);
-      const result = `${words} ${rubleWord} ${String(kopecks).padStart(2, '0')} ${kopeckWord}`;
-      return capitalize ? cap(result) : result;
-    }
-
-    function wordsShort(amount, capitalize = true) {
-      const { rubles } = splitMoney(amount);
-      const result = integerToWords(rubles);
-      return capitalize ? cap(result) : result;
-    }
-
-    function formatAmount(amount) {
-      const { rubles, kopecks } = splitMoney(amount);
-      const rubleWord = plural(rubles, ['рубль', 'рубля', 'рублей']);
-      const kopeckWord = plural(kopecks, ['копейка', 'копейки', 'копеек']);
-      const kop = String(kopecks).padStart(2, '0');
-      const format = formatSelect.value;
-
-      if (format === 'f1') return `${numRub(amount)} (${wordsShort(amount)}) ${rubleWord} ${kop} ${kopeckWord}`;
-      if (format === 'f2') return `${numFull(amount)} (${wordsFull(amount)})`;
-      if (format === 'f3') return `${numFull(amount)} руб. (${wordsFull(amount)})`;
-      if (format === 'f4') return `${numRub(amount)} ${rubleWord} ${kop} ${kopeckWord} (${wordsFull(amount)})`;
-      return wordsFull(amount);
-    }
-
-    function getVatReason() {
-      const value = vatReasonSelect.value;
-
-      if (value === 'usn') return 'НДС не облагается на основании п. 1 ст. 145 НК РФ';
-      if (value === 'npd') return 'НДФЛ не удерживается в связи с уплатой Исполнителем налога на профессиональный доход (далее – НПД)';
-      if (value === 'person') return 'облагаемых налогами в установленном законодательством порядке';
-      return 'НДС не облагается';
-    }
-
-    function makeFullLine(total, vat, rate, mode) {
-      if (mode === 'none') {
-        return `${formatAmount(total)}, ${getVatReason()}`;
-      }
-
-      return `${formatAmount(total)}, в том числе НДС ${rate}% – ${formatAmount(vat)}`;
-    }
-
-    function makeAboveLine(base, vat, total, rate, mode) {
-      if (mode === 'none') {
-        return `${formatAmount(total)}, ${getVatReason()}`;
-      }
-
-      return `${formatAmount(base)}, кроме того НДС ${rate}% – ${formatAmount(vat)}, всего ${formatAmount(total)}`;
-    }
-
-    function calculate() {
-      const amount = parseAmount(amountInput.value);
-      const rate = Number(rateSelect.value);
-      const mode = modeSelect.value;
-
-      let base = 0;
-      let vat = 0;
-      let total = 0;
-
-      if (mode === 'included') {
-        total = amount;
-        vat = amount * rate / (100 + rate);
-        base = total - vat;
-      } else if (mode === 'above') {
-        base = amount;
-        vat = amount * rate / 100;
-        total = base + vat;
-      } else {
-        base = amount;
-        vat = 0;
-        total = amount;
-      }
-
-      base = round2(base);
-      vat = round2(vat);
-      total = round2(total);
-
-      current.base = base;
-      current.vat = vat;
-      current.total = total;
-      current.texts.base = formatAmount(base);
-      current.texts.vat = formatAmount(vat);
-      current.texts.total = formatAmount(total);
-      current.texts.full = makeFullLine(total, vat, rate, mode);
-      current.texts.above = makeAboveLine(base, vat, total, rate, mode);
-
-      baseLine.textContent = current.texts.base;
-      vatLine.textContent = current.texts.vat;
-      totalLine.textContent = current.texts.total;
-      fullLineText.textContent = current.texts.full;
-      aboveLineText.textContent = current.texts.above;
-    }
-
-    async function copyText(text, element) {
-      try {
-        await navigator.clipboard.writeText(text);
-      } catch (e) {
-        const temp = document.createElement('textarea');
-        temp.value = text;
-        document.body.appendChild(temp);
-        temp.select();
-        document.execCommand('copy');
-        temp.remove();
-      }
-
-      if (element) {
-        element.classList.add('copied');
-        setTimeout(() => element.classList.remove('copied'), 1200);
-      }
-    }
-
-    copyRows.forEach(row => {
-      const copy = () => copyText(current.texts[row.dataset.copy], row);
-      row.addEventListener('click', copy);
-      row.addEventListener('keydown', event => {
-        if (event.key === 'Enter' || event.key === ' ') {
-          event.preventDefault();
-          copy();
-        }
-      });
-    });
-
-    fullLine.addEventListener('click', () => copyText(current.texts.full, fullLine));
-    fullLine.addEventListener('keydown', event => {
-      if (event.key === 'Enter' || event.key === ' ') {
-        event.preventDefault();
-        copyText(current.texts.full, fullLine);
-      }
-    });
-
-    aboveLine.addEventListener('click', () => copyText(current.texts.above, aboveLine));
-    aboveLine.addEventListener('keydown', event => {
-      if (event.key === 'Enter' || event.key === ' ') {
-        event.preventDefault();
-        copyText(current.texts.above, aboveLine);
-      }
-    });
-
-    resetBtn.addEventListener('click', () => {
-      amountInput.value = '';
-      amountInput.focus();
-      rateSelect.value = '22';
-      modeSelect.value = 'above';
-      saveSettings();
-      calculate();
-    });
-
-    amountInput.addEventListener('input', () => {
-      saveSettings();
-      calculate();
-    });
-
-    [rateSelect, modeSelect, formatSelect, vatReasonSelect].forEach(select => {
-      select.addEventListener('change', () => {
-        saveSettings();
-        calculate();
-      });
-    });
-
-    loadSettings();
-    calculate();
-  </script>
+  <div class="toast" id="toast" hidden role="status" aria-live="polite" aria-atomic="true">
+    <span class="toast-icon" aria-hidden="true"></span>
+    <span class="toast-message" id="toastMessage"></span>
+    <button class="toast-action" id="toastAction" type="button" hidden></button>
+    <button class="toast-close" id="toastClose" type="button" aria-label="Закрыть уведомление">×</button>
+  </div>
 </body>
 </html>
