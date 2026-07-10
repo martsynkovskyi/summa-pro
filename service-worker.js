@@ -1,12 +1,12 @@
 "use strict";
 
-const CACHE_NAME = "summa-propisyu-v2.3.1";
+const CACHE_NAME = "summa-propisyu-v2.3.2";
 const APP_SHELL = [
   "./",
   "./index.html",
-  "./assets/styles.css?v=2.3.1",
+  "./assets/styles.css?v=2.3.2",
   "./assets/calculator-core.js",
-  "./assets/app.js?v=2.3.1",
+  "./assets/app.js?v=2.3.2",
   "./favicon.svg",
   "./apple-touch-icon.png",
   "./manifest.webmanifest",
