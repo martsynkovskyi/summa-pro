@@ -1,11 +1,12 @@
 "use strict";
 
-const CACHE_NAME = "summa-propisyu-v2.3";
+const CACHE_NAME = "summa-propisyu-v2.3.1";
 const APP_SHELL = [
   "./",
   "./index.html",
-  "./assets/styles.css",
-  "./assets/app.js",
+  "./assets/styles.css?v=2.3.1",
+  "./assets/calculator-core.js",
+  "./assets/app.js?v=2.3.1",
   "./favicon.svg",
   "./apple-touch-icon.png",
   "./manifest.webmanifest",
@@ -15,7 +16,8 @@ const APP_SHELL = [
   "./fonts/GolosText-Regular.woff2",
   "./fonts/GolosText-Medium.woff2",
   "./fonts/GolosText-SemiBold.woff2",
-  "./fonts/GolosText-Bold.woff2"
+  "./fonts/GolosText-Bold.woff2",
+  "./fonts/GolosText-ExtraBold.woff2"
 ];
 
 self.addEventListener("install", event => {
@@ -37,33 +39,35 @@ self.addEventListener("activate", event => {
 self.addEventListener("fetch", event => {
   const request = event.request;
   if (request.method !== "GET") return;
-
   const url = new URL(request.url);
   if (url.origin !== self.location.origin) return;
 
-  if (request.mode === "navigate") {
+  const isFreshAsset = request.mode === "navigate" ||
+    /\.(?:css|js)$/i.test(url.pathname) ||
+    url.pathname.endsWith("/service-worker.js");
+
+  if (isFreshAsset) {
     event.respondWith(
-      fetch(request)
+      fetch(request, { cache: "no-store" })
         .then(response => {
-          const clone = response.clone();
-          caches.open(CACHE_NAME).then(cache => cache.put("./index.html", clone));
+          if (response && response.ok) {
+            const copy = response.clone();
+            caches.open(CACHE_NAME).then(cache => cache.put(request, copy));
+          }
           return response;
         })
-        .catch(() => caches.match("./index.html"))
+        .catch(() => caches.match(request).then(r => r || caches.match("./index.html")))
     );
     return;
   }
 
   event.respondWith(
-    caches.match(request).then(cached => {
-      if (cached) return cached;
-      return fetch(request).then(response => {
-        if (response && response.ok) {
-          const clone = response.clone();
-          caches.open(CACHE_NAME).then(cache => cache.put(request, clone));
-        }
-        return response;
-      });
-    })
+    caches.match(request).then(cached => cached || fetch(request).then(response => {
+      if (response && response.ok) {
+        const copy = response.clone();
+        caches.open(CACHE_NAME).then(cache => cache.put(request, copy));
+      }
+      return response;
+    }))
   );
 });
