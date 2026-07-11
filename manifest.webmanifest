@@ -1,0 +1,38 @@
+{
+  "id": "./",
+  "name": "Сумма прописью",
+  "short_name": "Сумма прописью",
+  "description": "Расчёт НДС и готовые формулировки для договоров, актов и счетов",
+  "lang": "ru",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "display_override": ["window-controls-overlay", "standalone", "minimal-ui"],
+  "orientation": "any",
+  "background_color": "#edf3fa",
+  "theme_color": "#0f3d91",
+  "categories": ["finance", "business", "productivity"],
+  "icons": [
+    {
+      "src": "icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "preview-v2.3.4.png",
+      "sizes": "1200x630",
+      "type": "image/png",
+      "form_factor": "wide",
+      "label": "Сумма прописью"
+    }
+  ]
+}
