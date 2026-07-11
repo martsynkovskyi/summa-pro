@@ -1,9 +1,0 @@
-{
-  "name": "summa-propisyu",
-  "version": "2.3.0",
-  "private": true,
-  "description": "Статический сервис расчёта НДС и написания суммы прописью",
-  "scripts": {
-    "test": "node tests/run-tests.js"
-  }
-}
