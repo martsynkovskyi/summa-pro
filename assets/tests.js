@@ -28,13 +28,19 @@
     test("Разбор 45 000,50", app.parseAmount("45 000,50").value === 45000.5);
     test("Разбор 1.234,56", app.parseAmount("1.234,56").value === 1234.56);
     test("Разбор 45 000.50", app.parseAmount("45 000.50").value === 45000.5);
+    test("Разбор 1 234 567,89", app.parseAmount("1 234 567,89").value === 1234567.89);
+    test("Разбор 1,234.56", app.parseAmount("1,234.56").value === 1234.56);
+    test("Отклонение отрицательной суммы", app.parseAmount("-100").valid === false);
+    test("Отклонение букв в сумме", app.parseAmount("abc100").valid === false);
+    test("Отклонение неверных разделителей", app.parseAmount("1.234.56").valid === false);
+    test("Отклонение длинной дробной части", app.parseAmount("12,3456").valid === false);
     test("Ограничение максимальной суммы", app.parseAmount("1000000000000").valid === false);
 
     const above22 = app.calculateValues(100, 22, "above");
     test("НДС 22% сверху", close(above22.base, 100) && close(above22.vat, 22) && close(above22.total, 122));
 
     const included22 = app.calculateValues(122, 22, "included");
-    test("НДС 22% включён", close(included22.base, 100) && close(included22.vat, 22) && close(included22.total, 122));
+    test("НДС 22% включен", close(included22.base, 100) && close(included22.vat, 22) && close(included22.total, 122));
 
     const above5 = app.calculateValues(100, 5, "above");
     test("НДС 5% сверху", close(above5.vat, 5) && close(above5.total, 105));
@@ -53,6 +59,7 @@
     test("Копейки 01", app.wordsFull(1.01).endsWith("01 копейка"), app.wordsFull(1.01));
     test("Копейки 02", app.wordsFull(1.02).endsWith("02 копейки"), app.wordsFull(1.02));
     test("Копейки 05", app.wordsFull(1.05).endsWith("05 копеек"), app.wordsFull(1.05));
+    test("Округление до копейки", app.wordsFull(1.005).endsWith("01 копейка"), app.wordsFull(1.005));
     test("Формат f1", app.formatAmount(1234.56, "f1").includes("1 234") && app.formatAmount(1234.56, "f1").includes("56 копеек"));
     test("Формат f2", app.formatAmount(1234.56, "f2").startsWith("1 234,56"));
     test("Формат f3", app.formatAmount(1234.56, "f3").includes("руб."));

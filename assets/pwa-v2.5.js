@@ -1,76 +1,46 @@
 (() => {
   "use strict";
 
-  const banner = document.getElementById("pwaInstallBar");
   const installButton = document.getElementById("pwaInstallButton");
-  const dismissButton = document.getElementById("pwaInstallDismiss");
   const dialog = document.getElementById("pwaInstallDialog");
   const dialogTitle = document.getElementById("pwaDialogTitle");
   const dialogText = document.getElementById("pwaDialogText");
   const steps = document.getElementById("pwaInstallSteps");
   const dialogCloseButtons = [...document.querySelectorAll("[data-pwa-close]")];
-  const installTitle = document.getElementById("pwaInstallTitle");
-  const installText = document.getElementById("pwaInstallText");
+  const appShell = document.querySelector(".app-shell");
 
-  if (!banner || !installButton || !dialog || !steps) return;
+  if (!installButton || !dialog || !steps) return;
 
   const appName = document.querySelector('meta[name="application-name"]')?.content || document.title;
   const secureContext = location.protocol === "https:" || ["localhost", "127.0.0.1", "::1"].includes(location.hostname);
   const ua = navigator.userAgent || "";
   const isIOS = /iPad|iPhone|iPod/.test(ua) || (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
   const isMac = /Macintosh|Mac OS X/.test(ua) && !isIOS;
+  const isFirefox = /FxiOS|Firefox/.test(ua);
   const isSafari = /Safari/.test(ua) && !/(Chrome|Chromium|CriOS|Edg|EdgiOS|OPR|Opera|FxiOS|Firefox)/.test(ua);
   const isStandalone = () => window.matchMedia("(display-mode: standalone)").matches || navigator.standalone === true;
-  const sessionKey = `pwa-install-dismissed:${location.hostname}`;
   let deferredPrompt = null;
+  let dialogOpener = null;
+  let reloadingForUpdate = false;
 
-  function hasDismissed() {
-    try { return sessionStorage.getItem(sessionKey) === "1"; }
-    catch (_) { return false; }
+  function canOfferInstall() {
+    if (!secureContext || isStandalone()) return false;
+    if (isFirefox && !isIOS) return false;
+    return true;
   }
 
-  function markDismissed() {
-    try { sessionStorage.setItem(sessionKey, "1"); }
-    catch (_) {}
-  }
-
-  function showBanner(mode = "instructions") {
-    if (!secureContext || isStandalone() || hasDismissed()) return;
-
-    if (mode === "native") {
-      installTitle.textContent = "Установить приложение";
-      installText.textContent = "Быстрый запуск и работа без интернета.";
-      installButton.textContent = "Установить";
-    } else if (isIOS) {
-      installTitle.textContent = "Добавить на экран «Домой»";
-      installText.textContent = "Открывайте сервис как отдельное приложение.";
-      installButton.textContent = "Как добавить";
-    } else if (isMac && isSafari) {
-      installTitle.textContent = "Добавить приложение в Dock";
-      installText.textContent = "Быстрый запуск из Dock и отдельное окно.";
-      installButton.textContent = "Как добавить";
-    } else {
-      installTitle.textContent = "Использовать как приложение";
-      installText.textContent = "Быстрый запуск и автономная работа.";
-      installButton.textContent = "Подробнее";
-    }
-
-    banner.hidden = false;
-  }
-
-  function hideBanner({ dismiss = false } = {}) {
-    banner.hidden = true;
-    if (dismiss) markDismissed();
+  function updateInstallButton() {
+    installButton.hidden = !canOfferInstall();
   }
 
   function fillInstructions() {
     steps.replaceChildren();
     const list = [];
 
-    if (isIOS && isSafari) {
+    if (isIOS) {
       dialogTitle.textContent = "Добавить на экран «Домой»";
-      dialogText.textContent = `Safari установит «${appName}» как отдельное веб-приложение.`;
-      list.push("Нажмите кнопку «Поделиться» в панели Safari.");
+      dialogText.textContent = `Браузер установит «${appName}» как отдельное веб-приложение.`;
+      list.push("Нажмите кнопку «Поделиться» в панели браузера.");
       list.push("Выберите «На экран Домой».");
       list.push("Подтвердите название и нажмите «Добавить».");
     } else if (isMac && isSafari) {
@@ -94,17 +64,26 @@
     });
   }
 
+  function getFocusableElements() {
+    return [...dialog.querySelectorAll("button:not([disabled]), [href], input:not([disabled]), select:not([disabled]), [tabindex]:not([tabindex='-1'])")]
+      .filter(element => !element.hidden);
+  }
+
   function openDialog() {
+    dialogOpener = document.activeElement;
     fillInstructions();
     dialog.hidden = false;
     document.body.classList.add("pwa-dialog-open");
+    if (appShell) appShell.inert = true;
     dialog.querySelector(".pwa-dialog-close")?.focus();
   }
 
   function closeDialog() {
     dialog.hidden = true;
     document.body.classList.remove("pwa-dialog-open");
-    installButton.focus({ preventScroll: true });
+    if (appShell) appShell.inert = false;
+    if (dialogOpener instanceof HTMLElement) dialogOpener.focus({ preventScroll: true });
+    dialogOpener = null;
   }
 
   async function install() {
@@ -114,30 +93,50 @@
     }
 
     installButton.disabled = true;
-    const oldText = installButton.textContent;
-    installButton.textContent = "Открываем…";
+    const label = installButton.querySelector("span");
+    const oldText = label?.textContent || "Установить приложение";
+    if (label) label.textContent = "Открываем…";
 
     try {
       await deferredPrompt.prompt();
       const choice = await deferredPrompt.userChoice;
-      if (choice?.outcome === "accepted") hideBanner();
+      if (choice?.outcome === "accepted") installButton.hidden = true;
       deferredPrompt = null;
     } catch (error) {
       console.warn("Не удалось открыть системный диалог установки:", error);
       openDialog();
     } finally {
       installButton.disabled = false;
-      installButton.textContent = oldText;
+      if (label) label.textContent = oldText;
     }
+  }
+
+  function announceUpdate(registration) {
+    if (!registration.waiting || !navigator.serviceWorker.controller) return;
+    window.dispatchEvent(new CustomEvent("summa:update-ready", {
+      detail: {
+        apply: () => {
+          reloadingForUpdate = true;
+          registration.waiting?.postMessage({ type: "SKIP_WAITING" });
+        }
+      }
+    }));
   }
 
   async function registerServiceWorker() {
     if (!("serviceWorker" in navigator) || !secureContext) return;
 
     try {
-      const registration = await navigator.serviceWorker.register("./service-worker.js", {
+      const registration = await navigator.serviceWorker.register("./service-worker.js?v=2.5", {
         scope: "./",
         updateViaCache: "none"
+      });
+      announceUpdate(registration);
+      registration.addEventListener("updatefound", () => {
+        const worker = registration.installing;
+        worker?.addEventListener("statechange", () => {
+          if (worker.state === "installed") announceUpdate(registration);
+        });
       });
       registration.update().catch(() => {});
     } catch (error) {
@@ -148,35 +147,47 @@
   window.addEventListener("beforeinstallprompt", event => {
     event.preventDefault();
     deferredPrompt = event;
-    showBanner("native");
+    updateInstallButton();
   });
 
   window.addEventListener("appinstalled", () => {
     deferredPrompt = null;
-    hideBanner();
+    installButton.hidden = true;
   });
 
-  window.matchMedia("(display-mode: standalone)").addEventListener?.("change", event => {
-    if (event.matches) hideBanner();
+  navigator.serviceWorker?.addEventListener("controllerchange", () => {
+    if (reloadingForUpdate) location.reload();
   });
 
+  window.matchMedia("(display-mode: standalone)").addEventListener?.("change", updateInstallButton);
   installButton.addEventListener("click", install);
-  dismissButton?.addEventListener("click", () => hideBanner({ dismiss: true }));
   dialogCloseButtons.forEach(button => button.addEventListener("click", closeDialog));
   dialog.addEventListener("click", event => {
     if (event.target === dialog) closeDialog();
   });
   document.addEventListener("keydown", event => {
-    if (event.key === "Escape" && !dialog.hidden) closeDialog();
+    if (dialog.hidden) return;
+    if (event.key === "Escape") {
+      event.preventDefault();
+      closeDialog();
+      return;
+    }
+    if (event.key !== "Tab") return;
+    const focusable = getFocusableElements();
+    if (!focusable.length) return;
+    const first = focusable[0];
+    const last = focusable.at(-1);
+    if (event.shiftKey && document.activeElement === first) {
+      event.preventDefault();
+      last.focus();
+    } else if (!event.shiftKey && document.activeElement === last) {
+      event.preventDefault();
+      first.focus();
+    }
   });
 
+  updateInstallButton();
   registerServiceWorker();
-
-  if (secureContext && !isStandalone()) {
-    window.setTimeout(() => {
-      if (!deferredPrompt) showBanner("instructions");
-    }, 900);
-  }
 
   window.__PWA_STATUS__ = Object.freeze({
     appName,
@@ -184,6 +195,7 @@
     isSafari,
     isIOS,
     isMac,
+    isFirefox,
     isStandalone
   });
 })();

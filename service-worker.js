@@ -1,26 +1,27 @@
 "use strict";
 
-const CACHE_NAME = "summa-propisyu-v2.4-20260711";
+const CACHE_PREFIX = "summa-propisyu-";
+const CACHE_NAME = "summa-propisyu-v2.5-20260912";
 const OFFLINE_URL = "./index.html";
 const APP_SHELL = [
   "./index.html",
-  "./assets/styles-v2.4.css",
-  "./assets/app-v2.4.js",
-  "./assets/pwa.css",
-  "./assets/pwa.js",
+  "./assets/styles-v2.5.css",
+  "./assets/app-v2.5.js",
+  "./assets/pwa-v2.5.css",
+  "./assets/pwa-v2.5.js",
   "./favicon.svg",
-  "./apple-touch-icon.png",
   "./manifest.webmanifest",
-  "./preview-v2.4.png",
   "./icons/icon-192.png",
+  "./fonts/GolosText-Regular.woff2"
+];
+const OPTIONAL_ASSETS = [
+  "./apple-touch-icon.png",
   "./icons/icon-512.png",
   "./icons/icon-maskable-192.png",
   "./icons/icon-maskable-512.png",
-  "./fonts/GolosText-Regular.woff2",
   "./fonts/GolosText-Medium.woff2",
   "./fonts/GolosText-SemiBold.woff2",
-  "./fonts/GolosText-Bold.woff2",
-  "./fonts/GolosText-ExtraBold.woff2"
+  "./fonts/GolosText-Bold.woff2"
 ];
 
 self.addEventListener("install", event => {
@@ -28,14 +29,14 @@ self.addEventListener("install", event => {
     const cache = await caches.open(CACHE_NAME);
     const requests = APP_SHELL.map(url => new Request(url, { cache: "reload" }));
     await cache.addAll(requests);
-    await self.skipWaiting();
+    await Promise.allSettled(OPTIONAL_ASSETS.map(url => cache.add(new Request(url, { cache: "reload" }))));
   })());
 });
 
 self.addEventListener("activate", event => {
   event.waitUntil((async () => {
     const keys = await caches.keys();
-    await Promise.all(keys.filter(key => key !== CACHE_NAME).map(key => caches.delete(key)));
+    await Promise.all(keys.filter(key => key.startsWith(CACHE_PREFIX) && key !== CACHE_NAME).map(key => caches.delete(key)));
     await self.clients.claim();
   })());
 });
@@ -49,11 +50,17 @@ async function networkFirstNavigation(request) {
     const response = await fetch(request);
     if (response.ok) {
       const cache = await caches.open(CACHE_NAME);
-      await cache.put(OFFLINE_URL, response.clone());
+      await cache.put(request, response.clone());
+      const url = new URL(request.url);
+      if (url.pathname === "/" || url.pathname.endsWith("/index.html")) {
+        await cache.put(OFFLINE_URL, response.clone());
+      }
     }
     return response;
   } catch (_) {
-    return (await caches.match(OFFLINE_URL, { ignoreSearch: true })) || Response.error();
+    return (await caches.match(request, { ignoreSearch: true })) ||
+      (await caches.match(OFFLINE_URL, { ignoreSearch: true })) ||
+      Response.error();
   }
 }
 

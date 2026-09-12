@@ -1,13 +1,12 @@
 (() => {
   "use strict";
 
-  const APP_VERSION = "2.4";
+  const APP_VERSION = "2.5";
   const STORAGE_KEY = "summaPropisyuSettingsV2";
   const HISTORY_KEY = "summaPropisyuHistoryV1";
   const MAX_HISTORY = 10;
   const MAX_AMOUNT = 999_999_999_999.99;
   const SAVE_DELAY = 280;
-  const HISTORY_DELAY = 1400;
 
   const form = document.getElementById("calculatorForm");
   const amountInput = document.getElementById("amount");
@@ -25,6 +24,9 @@
   const baseLine = document.getElementById("baseLine");
   const vatLine = document.getElementById("vatLine");
   const totalLine = document.getElementById("totalLine");
+  const baseAmount = document.getElementById("baseAmount");
+  const vatAmount = document.getElementById("vatAmount");
+  const totalAmount = document.getElementById("totalAmount");
   const fullLineText = document.getElementById("fullLineText");
   const aboveLineText = document.getElementById("aboveLineText");
   const fullLineCard = document.getElementById("fullLineCard");
@@ -71,7 +73,6 @@
   const hundreds = ["", "сто", "двести", "триста", "четыреста", "пятьсот", "шестьсот", "семьсот", "восемьсот", "девятьсот"];
 
   let saveTimer = 0;
-  let historyTimer = 0;
   let toastTimer = 0;
   let copiedTimer = 0;
   let undoSnapshot = null;
@@ -176,7 +177,7 @@
     if (!restored) {
       restoreSnapshot(defaults, { save: false });
       hasUserInput = false;
-      setSaveState("idle", "Черновик не изменён");
+      setSaveState("idle", "Черновик не изменен");
     } else {
       hasUserInput = false;
       setSaveState("saved", "Черновик восстановлен");
@@ -266,41 +267,63 @@
   }
 
   function parseAmount(value) {
-    const source = String(value ?? "")
-      .trim()
-      .replace(/[\s\u00a0\u202f']/g, "")
-      .replace(/₽|руб\.?/gi, "")
-      .replace(/[^0-9.,]/g, "");
+    const raw = String(value ?? "").trim();
+    if (!raw) return { value: 0, valid: true, empty: true };
 
-    if (!source) return { value: 0, valid: true, empty: true };
+    const withoutCurrency = raw.replace(/\s*(?:₽|руб\.?)\s*$/i, "").trim();
+    if (!withoutCurrency || /[^0-9.,\s\u00a0\u202f']/u.test(withoutCurrency)) {
+      return { value: 0, valid: false, empty: false, reason: "format" };
+    }
 
-    const lastComma = source.lastIndexOf(",");
-    const lastDot = source.lastIndexOf(".");
+    const source = withoutCurrency.replace(/[\s\u00a0\u202f']/g, "");
+    if (!source || !/\d/.test(source)) return { value: 0, valid: false, empty: false, reason: "format" };
+
+    const commas = [...source.matchAll(/,/g)].map(match => match.index);
+    const dots = [...source.matchAll(/\./g)].map(match => match.index);
     let decimalIndex = -1;
 
-    if (lastComma >= 0 && lastDot >= 0) decimalIndex = Math.max(lastComma, lastDot);
-    else {
-      const separator = lastComma >= 0 ? "," : lastDot >= 0 ? "." : "";
-      if (separator) {
-        const indexes = [];
-        for (let i = 0; i < source.length; i += 1) if (source[i] === separator) indexes.push(i);
-        const lastIndex = indexes[indexes.length - 1];
-        const fractionLength = source.length - lastIndex - 1;
-        if (fractionLength > 0 && fractionLength <= 2) decimalIndex = lastIndex;
+    if (commas.length && dots.length) {
+      decimalIndex = Math.max(commas.at(-1), dots.at(-1));
+      const decimalSeparator = source[decimalIndex];
+      if ((decimalSeparator === "," ? commas.length : dots.length) !== 1) {
+        return { value: 0, valid: false, empty: false, reason: "format" };
+      }
+    } else {
+      const indexes = commas.length ? commas : dots;
+      if (indexes.length === 1) {
+        const fractionLength = source.length - indexes[0] - 1;
+        if (fractionLength <= 2) decimalIndex = indexes[0];
+        else if (fractionLength !== 3) return { value: 0, valid: false, empty: false, reason: "format" };
+      } else if (indexes.length > 1) {
+        const groups = source.split(commas.length ? "," : ".");
+        if (!/^\d{1,3}$/.test(groups[0]) || groups.slice(1).some(group => !/^\d{3}$/.test(group))) {
+          return { value: 0, valid: false, empty: false, reason: "format" };
+        }
+      }
+    }
+
+    if (decimalIndex >= 0) {
+      const integerPart = source.slice(0, decimalIndex);
+      const fractionPart = source.slice(decimalIndex + 1);
+      const groupingSeparator = source.includes(",") && source.includes(".")
+        ? (source[decimalIndex] === "," ? "." : ",")
+        : "";
+      if (!integerPart || fractionPart.length > 2 || (groupingSeparator && !/^\d{1,3}(?:[.,]\d{3})*$/.test(integerPart))) {
+        return { value: 0, valid: false, empty: false, reason: "format" };
       }
     }
 
     let normalized = "";
     for (let i = 0; i < source.length; i += 1) {
-      const char = source[i];
-      if (/\d/.test(char)) normalized += char;
+      if (/\d/.test(source[i])) normalized += source[i];
       else if (i === decimalIndex) normalized += ".";
     }
 
-    if (!normalized || normalized === ".") return { value: 0, valid: false, empty: false };
     const number = Number(normalized);
-    const valid = Number.isFinite(number) && number >= 0 && number <= MAX_AMOUNT;
-    return { value: valid ? round2(number) : 0, valid, empty: false };
+    if (!Number.isFinite(number) || number > MAX_AMOUNT) {
+      return { value: 0, valid: false, empty: false, reason: "limit" };
+    }
+    return { value: round2(number), valid: true, empty: false };
   }
 
   function numRub(amount) {
@@ -390,10 +413,13 @@
     amountInput.setAttribute("aria-invalid", "true");
     amountError.textContent = message;
     current.valid = false;
-    const placeholder = "Проверьте введённую сумму";
+    const placeholder = "Проверьте введенную сумму";
     setOutputText(baseLine, placeholder);
     setOutputText(vatLine, placeholder);
     setOutputText(totalLine, placeholder);
+    setOutputText(baseAmount, "—");
+    setOutputText(vatAmount, "—");
+    setOutputText(totalAmount, "—");
     setOutputText(fullLineText, "Исправьте сумму, чтобы получить готовую формулировку.");
     setOutputText(aboveLineText, "Исправьте сумму, чтобы получить готовую формулировку.");
   }
@@ -411,7 +437,7 @@
 
     if (mode === "included") {
       amountLabel.textContent = "Сумма с НДС";
-      calculationBadge.textContent = `НДС включён · ${rate}%`;
+      calculationBadge.textContent = `НДС включен · ${rate}%`;
       fullLineCard.classList.add("is-recommended");
       aboveLineCard.classList.remove("is-recommended");
       fullLineKicker.textContent = "Рекомендуемый вариант";
@@ -456,7 +482,9 @@
 
     if (!parsed.valid) {
       const limit = new Intl.NumberFormat("ru-RU").format(Math.floor(MAX_AMOUNT)).replace(/\u00a0/g, " ");
-      setInvalidState(`Допустима сумма до ${limit} руб.`);
+      setInvalidState(parsed.reason === "limit"
+        ? `Допустима сумма до ${limit} руб.`
+        : "Введите сумму цифрами, используя один формат разделителей.");
       return;
     }
 
@@ -483,13 +511,16 @@
     setOutputText(baseLine, current.texts.base);
     setOutputText(vatLine, current.texts.vat);
     setOutputText(totalLine, current.texts.total);
+    setOutputText(baseAmount, `${numFull(values.base)} ₽`);
+    setOutputText(vatAmount, `${numFull(values.vat)} ₽`);
+    setOutputText(totalAmount, `${numFull(values.total)} ₽`);
     setOutputText(fullLineText, current.texts.full);
     setOutputText(aboveLineText, current.texts.above);
 
   }
 
   function modeLabel(mode, rate) {
-    if (mode === "included") return `НДС включён · ${rate}%`;
+    if (mode === "included") return `НДС включен · ${rate}%`;
     if (mode === "above") return `НДС сверху · ${rate}%`;
     return "Без НДС";
   }
@@ -518,8 +549,12 @@
 
   async function writeClipboard(text) {
     if (navigator.clipboard && window.isSecureContext) {
-      await navigator.clipboard.writeText(text);
-      return;
+      try {
+        await navigator.clipboard.writeText(text);
+        return;
+      } catch (_) {
+        // Some browsers expose Clipboard API but can still reject a permitted user action.
+      }
     }
     const textarea = document.createElement("textarea");
     textarea.value = text;
@@ -542,7 +577,7 @@
 
   async function copyResult(element) {
     if (!current.valid) {
-      showToast("Сначала исправьте введённую сумму.", { tone: "error" });
+      showToast("Сначала исправьте введенную сумму.", { tone: "error" });
       amountInput.focus();
       return;
     }
@@ -562,17 +597,17 @@
 
   async function copyAll(entry = current) {
     if (!entry.valid && entry === current) {
-      showToast("Сначала исправьте введённую сумму.", { tone: "error" });
+      showToast("Сначала исправьте введенную сумму.", { tone: "error" });
       amountInput.focus();
       return;
     }
     try {
       await writeClipboard(buildAllText(entry));
       if (entry === current) saveCurrentToHistory();
-      showToast("Весь расчёт скопирован.");
+      showToast("Весь расчет скопирован.");
     } catch (error) {
       console.error(error);
-      showToast("Не удалось скопировать расчёт.", { tone: "error" });
+      showToast("Не удалось скопировать расчет.", { tone: "error" });
     }
   }
 
@@ -613,7 +648,6 @@
   function clearForm() {
     undoSnapshot = snapshot();
     clearTimeout(saveTimer);
-    clearTimeout(historyTimer);
     amountInput.value = "";
     setCheckedValue("rate", defaults.rate);
     setCheckedValue("mode", defaults.mode);
@@ -658,11 +692,42 @@
     };
   }
 
+  function normalizeHistoryItem(item) {
+    const input = Number(item?.input);
+    const rate = String(item?.rate);
+    const mode = String(item?.mode);
+    const format = String(item?.format);
+    const vatReason = String(item?.vatReason);
+    if (!Number.isFinite(input) || input <= 0 || input > MAX_AMOUNT ||
+        !isAllowed("rate", rate) || !isAllowed("mode", mode) ||
+        !isAllowed("format", format) || !isAllowed("vatReason", vatReason)) return null;
+
+    const values = calculateValues(input, Number(rate), mode);
+    return {
+      id: typeof item.id === "string" ? item.id : `${Date.now()}-${Math.random().toString(36).slice(2, 8)}`,
+      timestamp: Number.isFinite(Number(item.timestamp)) ? Number(item.timestamp) : Date.now(),
+      amount: inputMoney(input),
+      input,
+      rate: Number(rate),
+      mode,
+      format,
+      vatReason,
+      ...values,
+      texts: {
+        base: formatAmount(values.base, format),
+        vat: formatAmount(values.vat, format),
+        total: formatAmount(values.total, format),
+        full: makeFullLine(values.total, values.vat, Number(rate), mode, format, vatReason),
+        above: makeAboveLine(values.base, values.vat, values.total, Number(rate), mode, format, vatReason)
+      }
+    };
+  }
+
   function loadHistory() {
     try {
       const raw = localStorage.getItem(HISTORY_KEY);
       const parsed = raw ? JSON.parse(raw) : [];
-      history = Array.isArray(parsed) ? parsed.filter(item => item && Number.isFinite(Number(item.input))).slice(0, MAX_HISTORY) : [];
+      history = Array.isArray(parsed) ? parsed.map(normalizeHistoryItem).filter(Boolean).slice(0, MAX_HISTORY) : [];
     } catch (error) {
       console.warn("Не удалось восстановить историю:", error);
       history = [];
@@ -676,11 +741,6 @@
     } catch (error) {
       console.warn("Не удалось сохранить историю:", error);
     }
-  }
-
-  function scheduleHistorySave() {
-    clearTimeout(historyTimer);
-    historyTimer = window.setTimeout(saveCurrentToHistory, HISTORY_DELAY);
   }
 
   function saveCurrentToHistory() {
@@ -712,7 +772,7 @@
       vatReason: item.vatReason
     });
     window.scrollTo({ top: 0, behavior: "smooth" });
-    showToast("Расчёт восстановлен из истории.");
+    showToast("Расчет восстановлен из истории.");
   }
 
   async function copyHistoryItem(item) {
@@ -786,7 +846,7 @@
       const main = document.createElement("button");
       main.type = "button";
       main.className = "history-main";
-      main.setAttribute("aria-label", `Восстановить расчёт ${item.amount} рублей`);
+      main.setAttribute("aria-label", `Восстановить расчет ${item.amount} рублей`);
 
       const amount = document.createElement("span");
       amount.className = "history-amount";
@@ -805,8 +865,8 @@
       const actions = document.createElement("div");
       actions.className = "history-item-actions";
       actions.append(
-        createHistoryAction("Скопировать весь расчёт", "copy", item),
-        createHistoryAction("Удалить расчёт", "delete", item)
+        createHistoryAction("Скопировать весь расчет", "copy", item),
+        createHistoryAction("Удалить расчет", "delete", item)
       );
 
       row.append(main, actions);
@@ -840,7 +900,6 @@
     hasUserInput = true;
     scheduleSave();
     calculate();
-    if (parsed.value > 0) scheduleHistorySave();
   }
 
   function onAmountInput() {
@@ -853,18 +912,6 @@
     hasUserInput = true;
     scheduleSave();
     calculate();
-    if (current.valid && current.input > 0) scheduleHistorySave();
-  }
-
-  function registerServiceWorker() {
-    if (!("serviceWorker" in navigator) || !/^https?:$/.test(location.protocol)) return;
-    window.addEventListener("load", () => {
-      navigator.serviceWorker.register("./service-worker.js?v=2.4", { updateViaCache: "none" })
-        .then(registration => registration.update())
-        .catch(error => {
-        console.warn("Не удалось включить офлайн-режим:", error);
-      });
-    });
   }
 
   function bindEvents() {
@@ -902,6 +949,17 @@
         event.preventDefault();
         copyAll();
       }
+    });
+
+    window.addEventListener("summa:update-ready", event => {
+      const applyUpdate = event.detail?.apply;
+      if (typeof applyUpdate !== "function") return;
+      showToast("Доступна новая версия приложения.", {
+        tone: "success",
+        duration: 12000,
+        actionLabel: "Обновить",
+        onAction: applyUpdate
+      });
     });
 
     historySection.addEventListener("toggle", () => {

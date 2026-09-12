@@ -2,7 +2,7 @@
   "id": "/",
   "name": "Сумма прописью",
   "short_name": "Сумма прописью",
-  "description": "Расчёт НДС и готовые формулировки для договоров, актов и счетов",
+  "description": "Расчет НДС и готовые формулировки для договоров, актов и счетов",
   "lang": "ru",
   "dir": "ltr",
   "start_url": "/",
@@ -49,7 +49,7 @@
   ],
   "screenshots": [
     {
-      "src": "preview-v2.4.png",
+      "src": "preview-v2.5.png",
       "sizes": "1200x630",
       "type": "image/png",
       "form_factor": "wide",
