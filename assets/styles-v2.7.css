@@ -4796,6 +4796,53 @@ select,
   }
 }
 
+/* v3.0: основная компоновка для 24/27-дюймовых Full HD, 2K и 4K мониторов */
+@media (min-width: 1500px) {
+  .workspace {
+    grid-template-columns: minmax(700px, .88fr) minmax(0, 1.12fr);
+  }
+
+  .phrase-section {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    align-items: stretch;
+    gap: 9px;
+  }
+
+  .phrase-section-heading {
+    grid-column: 1 / -1;
+  }
+
+  .phrase-card {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .phrase-card-actions {
+    margin-top: auto;
+  }
+}
+
+@media (min-width: 3300px) {
+  :root {
+    --type-base: 18px;
+    --type-secondary: 16px;
+    --type-label: 17px;
+    --type-section: 18px;
+    --type-panel: 24px;
+    --type-result: 24px;
+    --button-font-size: 18px;
+  }
+
+  .hero h1 {
+    font-size: 54px;
+  }
+
+  .hero-subtitle {
+    font-size: 16px;
+  }
+}
+
 /* v3.0: компактная геометрия для стандартных невысоких мониторов */
 @media (min-width: 1180px) and (max-height: 820px) {
   body {
