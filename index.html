@@ -19,8 +19,8 @@
   <meta property="og:description" content="Расчет НДС и готовые формулировки для договоров, актов и счетов">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://summa.martsynkovskyi.ru/">
-  <meta property="og:image" content="https://summa.martsynkovskyi.ru/preview-v2.5.png">
-  <meta property="og:image:secure_url" content="https://summa.martsynkovskyi.ru/preview-v2.5.png">
+  <meta property="og:image" content="https://summa.martsynkovskyi.ru/preview-v2.7.png">
+  <meta property="og:image:secure_url" content="https://summa.martsynkovskyi.ru/preview-v2.7.png">
   <meta property="og:image:type" content="image/png">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
@@ -29,20 +29,21 @@
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="Сумма прописью">
   <meta name="twitter:description" content="Расчет НДС и готовые формулировки для договоров, актов и счетов">
-  <meta name="twitter:image" content="https://summa.martsynkovskyi.ru/preview-v2.5.png">
+  <meta name="twitter:image" content="https://summa.martsynkovskyi.ru/preview-v2.7.png">
 
   <meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' data:; font-src 'self'; style-src 'self'; script-src 'self'; connect-src 'self'; worker-src 'self'; manifest-src 'self'; object-src 'none'; base-uri 'self'; form-action 'none'; frame-ancestors 'self'">
 
   <link rel="icon" href="favicon.svg" type="image/svg+xml">
   <link rel="apple-touch-icon" href="apple-touch-icon.png">
-  <link rel="manifest" href="manifest.webmanifest?v=2.6">
+  <link rel="manifest" href="manifest.webmanifest?v=2.7">
   <link rel="preload" href="fonts/GolosText-Regular.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="fonts/GolosText-Medium.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="fonts/GolosText-SemiBold.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="stylesheet" href="assets/styles-v2.6.css">
-  <link rel="stylesheet" href="assets/pwa-v2.6.css">
-  <script src="assets/app-v2.6.js" defer></script>
-  <script src="assets/pwa-v2.6.js" defer></script>
+  <link rel="preload" href="fonts/GolosText-ExtraBold.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="assets/styles-v2.7.css">
+  <link rel="stylesheet" href="assets/pwa-v2.7.css">
+  <script src="assets/app-v2.7.js" defer></script>
+  <script src="assets/pwa-v2.7.js" defer></script>
 </head>
 <body>
 
@@ -50,7 +51,7 @@
     <div class="pwa-dialog-card">
       <button class="pwa-dialog-close" type="button" data-pwa-close aria-label="Закрыть">×</button>
       <div class="pwa-dialog-head">
-        <img src="icons/icon-192.png" alt="">
+        <img src="assets/brand/summa-logo-v2.7.png" alt="">
         <div>
           <h2 id="pwaDialogTitle">Установить приложение</h2>
           <p id="pwaDialogText">Добавьте сервис на устройство для быстрого запуска.</p>
@@ -63,25 +64,20 @@
   </div>
   <div class="app-shell">
     <header class="hero" aria-labelledby="siteTitle">
-      <div class="hero-brand" aria-hidden="true">₽</div>
-
+      <div class="hero-brand" aria-hidden="true"><img src="assets/brand/summa-logo-v2.7.png" alt=""></div>
       <div class="hero-copy">
         <h1 id="siteTitle">Сумма прописью</h1>
         <p class="hero-subtitle">Расчет НДС и готовые формулировки для договоров, актов и счетов</p>
       </div>
+      <div class="hero-skyline" aria-hidden="true"><img src="assets/brand/summa-hero-v2.7.png" alt=""></div>
     </header>
 
     <main class="workspace">
       <section class="panel input-panel" aria-labelledby="parametersTitle">
         <div class="panel-header">
           <div class="panel-title-group">
-            <span class="panel-icon panel-icon-blue" aria-hidden="true">
-              <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="3.5" width="16" height="17" rx="2"/><path d="M7.5 7.5h9M8 12h2m4 0h2m-8 4h2m4 0h2"/></svg>
-            </span>
-            <div>
-              <h2 id="parametersTitle">Параметры расчета</h2>
-              <p>Введите сумму и выберите нужный способ начисления НДС.</p>
-            </div>
+            <span class="panel-icon panel-icon-blue" aria-hidden="true"><img src="assets/generated-icons/calculator-v2.7.png" alt=""></span>
+            <div><h2 id="parametersTitle">Параметры расчета</h2></div>
           </div>
 
           <div class="save-indicator" id="saveIndicator" data-state="idle" aria-live="polite">
@@ -91,22 +87,19 @@
         </div>
 
         <form id="calculatorForm" novalidate autocomplete="off">
-          <fieldset class="form-section form-section-primary">
-            <legend>
+          <section class="form-section form-section-primary" aria-labelledby="amountSectionTitle">
+            <div class="section-heading">
               <span class="section-number">1</span>
-              <span><strong>Сумма и НДС</strong><small>Исходные данные для расчета</small></span>
-            </legend>
+              <strong id="amountSectionTitle">Сумма и НДС</strong>
+            </div>
 
             <div class="field field-amount">
               <label for="amount">Сумма</label>
               <div class="control-wrap amount-wrap">
-                <input id="amount" name="amount" inputmode="decimal" autocomplete="off" maxlength="32" placeholder="45 000,00" value="0" aria-describedby="amountHelp amountError">
+                <input id="amount" name="amount" inputmode="decimal" autocomplete="off" maxlength="32" placeholder="45 000,00" value="0" aria-describedby="amountError">
                 <span class="currency-suffix" aria-hidden="true">₽</span>
               </div>
-              <div class="field-meta">
-                <span id="amountHelp">Можно вводить с пробелами, точкой или запятой.</span>
-                <span class="field-error" id="amountError" role="alert"></span>
-              </div>
+              <div class="field-meta"><span class="field-error" id="amountError" role="alert"></span></div>
             </div>
 
             <div class="field field-mode">
@@ -115,30 +108,24 @@
                 <label class="segment-option">
                   <input type="radio" name="mode" value="included">
                   <span class="segment-content">
-                    <span class="segment-icon segment-icon-blue" aria-hidden="true">
-                      <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8.5"/><path d="M8 9.5h5a2.5 2.5 0 0 1 0 5H9.5M9.5 7.5v10M8 14.5h7"/></svg>
-                    </span>
-                    <span><strong>НДС включен</strong><small>Сумма уже содержит НДС</small></span>
+                    <span class="segment-icon segment-icon-blue" aria-hidden="true"><img src="assets/generated-icons/vat-included-v2.7.png" alt=""></span>
+                    <span><strong>НДС включен</strong></span>
                   </span>
                 </label>
 
                 <label class="segment-option">
                   <input type="radio" name="mode" value="above" checked>
                   <span class="segment-content">
-                    <span class="segment-icon segment-icon-green" aria-hidden="true">
-                      <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6.5 12h11M12 6.5v11"/></svg>
-                    </span>
-                    <span><strong>НДС сверху</strong><small>НДС добавляется к сумме</small></span>
+                    <span class="segment-icon segment-icon-green" aria-hidden="true"><img src="assets/generated-icons/vat-above-v2.7.png" alt=""></span>
+                    <span><strong>НДС сверху</strong></span>
                   </span>
                 </label>
 
                 <label class="segment-option">
                   <input type="radio" name="mode" value="none">
                   <span class="segment-content">
-                    <span class="segment-icon segment-icon-gray" aria-hidden="true">
-                      <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6.5 12h11"/></svg>
-                    </span>
-                    <span><strong>Без НДС</strong><small>НДС не начисляется</small></span>
+                    <span class="segment-icon segment-icon-gray" aria-hidden="true"><img src="assets/generated-icons/no-vat-v2.7.png" alt=""></span>
+                    <span><strong>Без НДС</strong></span>
                   </span>
                 </label>
               </div>
@@ -149,19 +136,33 @@
               <div class="rate-switch" role="radiogroup" aria-labelledby="rateLabel">
                 <label class="rate-option rate-option-blue">
                   <input type="radio" name="rate" value="22" checked>
-                  <span><strong>22%</strong><small>основная ставка</small></span>
+                  <span><strong>22%</strong></span>
                 </label>
                 <label class="rate-option rate-option-green">
                   <input type="radio" name="rate" value="5">
-                  <span><strong>5%</strong><small>пониженная ставка</small></span>
+                  <span><strong>5%</strong></span>
                 </label>
               </div>
             </div>
 
-            <div class="field field-reason conditional-field" id="vatReasonField" hidden>
-              <label for="vatReason">Обоснование «НДС не облагается»</label>
-              <div class="control-wrap select-wrap">
-                <select id="vatReason" name="vatReason">
+            <div class="field field-reason" id="vatReasonField" hidden>
+              <span class="field-label" id="vatReasonLabel">Обоснование</span>
+              <div class="rate-switch reason-switch" role="radiogroup" aria-labelledby="vatReasonLabel">
+                <label class="rate-option rate-option-blue">
+                  <input type="radio" name="vatReasonChoice" value="usn" checked>
+                  <span class="reason-content"><img src="assets/reason-icons/usn-v2.7.png" alt="" aria-hidden="true"><strong>УСН</strong></span>
+                </label>
+                <label class="rate-option rate-option-green">
+                  <input type="radio" name="vatReasonChoice" value="npd">
+                  <span class="reason-content"><img src="assets/reason-icons/npd-v2.7.png" alt="" aria-hidden="true"><strong>НПД</strong></span>
+                </label>
+                <label class="rate-option rate-option-slate">
+                  <input type="radio" name="vatReasonChoice" value="person">
+                  <span class="reason-content"><img src="assets/reason-icons/person-v2.7.png" alt="" aria-hidden="true"><strong>ФЛ</strong></span>
+                </label>
+              </div>
+              <div class="control-wrap select-wrap reason-select-fallback">
+                <select id="vatReason" name="vatReason" data-visual="buttons" aria-label="Обоснование">
                   <option value="usn">ЮЛ / ИП на УСН, п. 1 ст. 145 НК РФ</option>
                   <option value="npd">Самозанятый, НПД</option>
                   <option value="person">Физическое лицо</option>
@@ -169,45 +170,37 @@
                 <span class="select-icon" aria-hidden="true"><svg viewBox="0 0 20 20" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m5 7.5 5 5 5-5"/></svg></span>
               </div>
             </div>
-          </fieldset>
+          </section>
 
-          <fieldset class="form-section form-section-last">
-            <legend>
+          <section class="form-section form-section-last" aria-labelledby="formatSectionTitle">
+            <div class="section-heading">
               <span class="section-number">2</span>
-              <span><strong>Формат текста</strong><small>Как будет выглядеть сумма в документе</small></span>
-            </legend>
+              <strong id="formatSectionTitle">Формат суммы прописью</strong>
+            </div>
 
             <div class="field field-format">
-              <label for="format">Формат суммы прописью</label>
               <div class="control-wrap select-wrap">
-                <select id="format" name="format">
-                  <option value="f1">100 (Сто) рублей 00 копеек</option>
-                  <option value="f2">100,00 (Сто рублей 00 копеек)</option>
-                  <option value="f3">100,00 руб. (Сто рублей 00 копеек)</option>
-                  <option value="f4">100 рублей 00 копеек (Сто рублей 00 копеек)</option>
+                <select id="format" name="format" aria-label="Формат суммы прописью">
+                  <option value="f1">1 234 (Одна тысяча двести тридцать четыре) рубля 56 копеек</option>
+                  <option value="f2">1 234,56 (Одна тысяча двести тридцать четыре рубля 56 копеек)</option>
+                  <option value="f3">1 234,56 руб. (Одна тысяча двести тридцать четыре рубля 56 копеек)</option>
+                  <option value="f4">Одна тысяча двести тридцать четыре рубля 56 копеек</option>
+                  <option value="f5">Одна тысяча двести тридцать четыре рубля пятьдесят шесть копеек</option>
                 </select>
                 <span class="select-icon" aria-hidden="true"><svg viewBox="0 0 20 20" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m5 7.5 5 5 5-5"/></svg></span>
               </div>
             </div>
 
-            <div class="format-preview">
-              <span class="format-preview-icon" aria-hidden="true">
-                <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 4h14v16H5zM8 8h8M8 12h8M8 16h5"/></svg>
-              </span>
-              <div><small>Пример выбранного формата</small><strong id="formatExample">1 234 (Одна тысяча двести тридцать четыре) рубля 56 копеек</strong></div>
-            </div>
-          </fieldset>
+          </section>
 
           <div class="form-footer-row">
             <div class="privacy-note">
-              <span class="privacy-icon" aria-hidden="true">
-                <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3.5 19 6v5.7c0 4.3-2.7 7.2-7 8.8-4.3-1.6-7-4.5-7-8.8V6z"/><path d="m8.8 12.1 2.1 2.1 4.4-4.6"/></svg>
-              </span>
-              <div><strong>Все данные остаются на устройстве</strong><span>Расчет выполняется локально.</span></div>
+              <span class="privacy-icon" aria-hidden="true"><img src="assets/generated-icons/privacy-v2.7.png" alt=""></span>
+              <div><strong>Все данные остаются на устройстве</strong></div>
             </div>
             <div class="form-actions">
               <button class="button button-secondary" type="button" id="resetBtn">
-                <svg viewBox="0 0 24 24" aria-hidden="true" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m5 15.5 8.7-8.7a2.4 2.4 0 0 1 3.4 0l1.1 1.1a2.4 2.4 0 0 1 0 3.4L10 19.5H6.5z"/><path d="m10.5 10 5 5M10 19.5h9"/></svg>
+                <img src="assets/generated-icons/eraser-v2.7.png" alt="" aria-hidden="true">
                 <span>Очистить форму</span>
               </button>
             </div>
@@ -218,15 +211,12 @@
       <section class="panel results-panel" aria-labelledby="resultsTitle">
         <div class="panel-header results-header">
           <div class="panel-title-group">
-            <span class="panel-icon panel-icon-green" aria-hidden="true">
-              <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 3.5h14v17H5zM8 8h8M8 12h3M8 16h3"/><path d="m14 16 1.5 1.5 3-3.5"/></svg>
-            </span>
-            <div><h2 id="resultsTitle">Готовые результаты</h2><p>Итоги копируются блоком или по отдельности.</p></div>
+            <span class="panel-icon panel-icon-green" aria-hidden="true"><img src="assets/generated-icons/results-v2.7.png" alt=""></span>
+            <div><h2 id="resultsTitle">Готовые результаты</h2></div>
           </div>
           <div class="results-actions">
-            <div class="calculation-badge" id="calculationBadge">НДС сверху · 22%</div>
             <button class="button button-copy-all" type="button" id="copyAllBtn" title="Ctrl/Cmd + Enter">
-              <svg viewBox="0 0 24 24" aria-hidden="true" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="8" y="8" width="11" height="11" rx="2"/><rect x="5" y="5" width="11" height="11" rx="2"/></svg>
+              <img src="assets/generated-icons/copy-v2.7.png" alt="" aria-hidden="true">
               <span>Скопировать весь расчет</span>
             </button>
           </div>
@@ -234,48 +224,44 @@
 
         <div class="summary-grid" aria-label="Итоги расчета">
           <article class="summary-card summary-card-blue copy-target" data-copy-key="base" tabindex="0" role="button" aria-label="Скопировать сумму без НДС">
-            <div class="summary-card-top"><span class="summary-card-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="3.5" y="6" width="17" height="12" rx="2"/><path d="M7 10h6a2 2 0 0 1 0 4H8.5M8.5 8.5v7M7 14h8"/></svg></span><span class="summary-label">Сумма без НДС</span><span class="summary-copy-icon" aria-hidden="true"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="8" y="8" width="11" height="11" rx="2"/><rect x="5" y="5" width="11" height="11" rx="2"/></svg></span></div>
+            <div class="summary-card-top"><span class="summary-card-icon" aria-hidden="true"><img src="assets/generated-icons/base-amount-v2.7.png" alt=""></span><span class="summary-label">Сумма без НДС</span><span class="summary-copy-icon" aria-hidden="true"><img src="assets/generated-icons/copy-v2.7.png" alt=""></span></div>
             <strong class="summary-number" id="baseAmount">0,00 ₽</strong>
             <span class="summary-words" id="baseLine">0 (Ноль) рублей 00 копеек</span>
           </article>
 
           <article class="summary-card summary-card-green copy-target" data-copy-key="vat" tabindex="0" role="button" aria-label="Скопировать сумму НДС">
-            <div class="summary-card-top"><span class="summary-card-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="8" cy="8" r="2.5"/><circle cx="16" cy="16" r="2.5"/><path d="m17.5 6.5-11 11"/></svg></span><span class="summary-label">НДС</span><span class="summary-copy-icon" aria-hidden="true"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="8" y="8" width="11" height="11" rx="2"/><rect x="5" y="5" width="11" height="11" rx="2"/></svg></span></div>
+            <div class="summary-card-top"><span class="summary-card-icon" aria-hidden="true"><img src="assets/generated-icons/vat-amount-v2.7.png" alt=""></span><span class="summary-label">НДС</span><span class="summary-copy-icon" aria-hidden="true"><img src="assets/generated-icons/copy-v2.7.png" alt=""></span></div>
             <strong class="summary-number" id="vatAmount">0,00 ₽</strong>
             <span class="summary-words" id="vatLine">0 (Ноль) рублей 00 копеек</span>
           </article>
 
           <article class="summary-card summary-card-slate copy-target" data-copy-key="total" tabindex="0" role="button" aria-label="Скопировать сумму с НДС">
-            <div class="summary-card-top"><span class="summary-card-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M6 3.5h12v17l-2.2-1.5-1.9 1.5-1.9-1.5-1.9 1.5L8.2 19 6 20.5z"/><path d="M9 8h6M9 12h6M9 16h3"/></svg></span><span class="summary-label">Сумма с НДС</span><span class="summary-copy-icon" aria-hidden="true"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="8" y="8" width="11" height="11" rx="2"/><rect x="5" y="5" width="11" height="11" rx="2"/></svg></span></div>
+            <div class="summary-card-top"><span class="summary-card-icon" aria-hidden="true"><img src="assets/generated-icons/total-amount-v2.7.png" alt=""></span><span class="summary-label">Сумма с НДС</span><span class="summary-copy-icon" aria-hidden="true"><img src="assets/generated-icons/copy-v2.7.png" alt=""></span></div>
             <strong class="summary-number" id="totalAmount">0,00 ₽</strong>
             <span class="summary-words" id="totalLine">0 (Ноль) рублей 00 копеек</span>
           </article>
         </div>
 
         <div class="phrase-section">
-          <div class="phrase-section-heading"><h3>Формулировки для документов</h3><p>Готовый текст можно сразу вставить в договор, счет или акт.</p></div>
+          <div class="phrase-section-heading"><h3>Формулировки для документов</h3></div>
 
           <article class="phrase-card phrase-card-primary" id="fullLineCard">
-            <div class="phrase-card-top">
-              <div><span class="phrase-kicker" id="fullLineKicker">Рекомендуемый вариант</span><h4 id="fullLineTitle">Сумма «в том числе НДС»</h4></div>
-              <button class="copy-chip phrase-copy-button" type="button" data-copy-key="full" aria-label="Скопировать формулировку в том числе НДС"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="11" height="11" rx="2"/><rect x="5" y="5" width="11" height="11" rx="2"/></svg><span>Копировать</span></button>
-            </div>
+            <div class="phrase-card-top"><h4 id="fullLineTitle">В том числе НДС</h4></div>
             <p id="fullLineText"></p>
+            <div class="phrase-card-actions"><button class="copy-chip phrase-copy-button" type="button" data-copy-key="full" aria-label="Скопировать формулировку в том числе НДС"><img src="assets/generated-icons/copy-v2.7.png" alt="" aria-hidden="true"><span>Копировать</span></button></div>
           </article>
 
           <article class="phrase-card" id="aboveLineCard">
-            <div class="phrase-card-top">
-              <div><span class="phrase-kicker" id="aboveLineKicker">Дополнительный вариант</span><h4 id="aboveLineTitle">Сумма «кроме того НДС»</h4></div>
-              <button class="copy-chip phrase-copy-button" type="button" data-copy-key="above" aria-label="Скопировать формулировку кроме того НДС"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="11" height="11" rx="2"/><rect x="5" y="5" width="11" height="11" rx="2"/></svg><span>Копировать</span></button>
-            </div>
+            <div class="phrase-card-top"><h4 id="aboveLineTitle">Кроме того НДС</h4></div>
             <p id="aboveLineText"></p>
+            <div class="phrase-card-actions"><button class="copy-chip phrase-copy-button" type="button" data-copy-key="above" aria-label="Скопировать формулировку кроме того НДС"><img src="assets/generated-icons/copy-v2.7.png" alt="" aria-hidden="true"><span>Копировать</span></button></div>
           </article>
         </div>
 
         <details class="history-section" id="historySection">
           <summary>
-            <span class="history-summary-icon" aria-hidden="true"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 7v5l3.2 2M4.5 7.5H8v3.5"/><path d="M7 7a8 8 0 1 1-1.8 8"/></svg></span>
-            <span><strong>Последние расчеты</strong><small>Хранятся только в этом браузере</small></span>
+            <span class="history-summary-icon" aria-hidden="true"><img src="assets/generated-icons/history-v2.7.png" alt=""></span>
+            <span><strong>Последние расчеты</strong></span>
             <span class="history-count" id="historyCount">0</span>
             <span class="history-chevron" aria-hidden="true"><svg viewBox="0 0 20 20" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m5 7.5 5 5 5-5"/></svg></span>
           </summary>
@@ -289,9 +275,9 @@
     </main>
 
     <footer class="footer">
-      <div class="footer-item"><span class="footer-mark" aria-hidden="true">©</span><div>Версия 2.6 (13.09.2026)<br>Александр Марцынковский</div></div>
+      <div class="footer-item"><span class="footer-mark" aria-hidden="true">©</span><div>Версия 2.7 - локальная проверка<br>Александр Марцынковский</div></div>
       <button class="footer-install" type="button" id="pwaInstallButton" hidden>
-        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12m0 0 4-4m-4 4-4-4"/><path d="M5 19h14"/></svg>
+        <img src="assets/generated-icons/install-v2.7.png" alt="" aria-hidden="true">
         <span>Установить приложение</span>
       </button>
       <a class="footer-domain" href="https://summa.martsynkovskyi.ru/">summa.martsynkovskyi.ru</a>

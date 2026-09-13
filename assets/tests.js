@@ -79,10 +79,13 @@
     test("Копейки 02", app.wordsFull(1.02).endsWith("02 копейки"), app.wordsFull(1.02));
     test("Копейки 05", app.wordsFull(1.05).endsWith("05 копеек"), app.wordsFull(1.05));
     test("Округление до копейки", app.wordsFull(1.005).endsWith("01 копейка"), app.wordsFull(1.005));
-    test("Формат f1", app.formatAmount(1234.56, "f1").includes("1 234") && app.formatAmount(1234.56, "f1").includes("56 копеек"));
-    test("Формат f2", app.formatAmount(1234.56, "f2").startsWith("1 234,56"));
-    test("Формат f3", app.formatAmount(1234.56, "f3").includes("руб."));
-    test("Формат f4", app.formatAmount(1234.56, "f4").includes("рубля 56 копеек"));
+    test("Формат f1", app.formatAmount(1234.56, "f1") === "1 234 (Одна тысяча двести тридцать четыре) рубля 56 копеек", app.formatAmount(1234.56, "f1"));
+    test("Формат f2", app.formatAmount(1234.56, "f2") === "1 234,56 (Одна тысяча двести тридцать четыре рубля 56 копеек)", app.formatAmount(1234.56, "f2"));
+    test("Формат f3", app.formatAmount(1234.56, "f3") === "1 234,56 руб. (Одна тысяча двести тридцать четыре рубля 56 копеек)", app.formatAmount(1234.56, "f3"));
+    test("Формат f4", app.formatAmount(1234.56, "f4") === "Одна тысяча двести тридцать четыре рубля 56 копеек", app.formatAmount(1234.56, "f4"));
+    test("Формат f5", app.formatAmount(1234.56, "f5") === "Одна тысяча двести тридцать четыре рубля пятьдесят шесть копеек", app.formatAmount(1234.56, "f5"));
+    test("Копейки прописью 01", app.wordsWithKopecks(1.01) === "Один рубль одна копейка", app.wordsWithKopecks(1.01));
+    test("Копейки прописью 00", app.wordsWithKopecks(100) === "Сто рублей ноль копеек", app.wordsWithKopecks(100));
 
     summary.textContent = `Пройдено ${passed} из ${total} тестов`;
     summary.className = `summary ${passed === total ? "ok" : "fail"}`;

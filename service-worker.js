@@ -1,27 +1,48 @@
 "use strict";
 
 const CACHE_PREFIX = "summa-propisyu-";
-const CACHE_NAME = "summa-propisyu-v2.6-20260913";
+const CACHE_NAME = "summa-propisyu-v2.7-20260913-style6";
 const OFFLINE_URL = "./index.html";
 const APP_SHELL = [
   "./index.html",
-  "./assets/styles-v2.6.css",
-  "./assets/app-v2.6.js",
-  "./assets/pwa-v2.6.css",
-  "./assets/pwa-v2.6.js",
+  "./assets/styles-v2.7.css",
+  "./assets/app-v2.7.js",
+  "./assets/pwa-v2.7.css",
+  "./assets/pwa-v2.7.js",
+  "./assets/brand/summa-logo-v2.7.png",
+  "./assets/brand/summa-hero-v2.7.png",
+  "./assets/reason-icons/usn-v2.7.png",
+  "./assets/reason-icons/npd-v2.7.png",
+  "./assets/reason-icons/person-v2.7.png",
+  "./assets/generated-icons/calculator-v2.7.png",
+  "./assets/generated-icons/results-v2.7.png",
+  "./assets/generated-icons/vat-included-v2.7.png",
+  "./assets/generated-icons/vat-above-v2.7.png",
+  "./assets/generated-icons/no-vat-v2.7.png",
+  "./assets/generated-icons/base-amount-v2.7.png",
+  "./assets/generated-icons/vat-amount-v2.7.png",
+  "./assets/generated-icons/total-amount-v2.7.png",
+  "./assets/generated-icons/privacy-v2.7.png",
+  "./assets/generated-icons/copy-v2.7.png",
+  "./assets/generated-icons/eraser-v2.7.png",
+  "./assets/generated-icons/history-v2.7.png",
+  "./assets/generated-icons/install-v2.7.png",
+  "./assets/generated-icons/trash-v2.7.png",
   "./favicon.svg",
   "./manifest.webmanifest",
   "./icons/icon-192.png",
   "./fonts/GolosText-Regular.woff2"
 ];
 const OPTIONAL_ASSETS = [
+  "./preview-v2.7.png",
   "./apple-touch-icon.png",
   "./icons/icon-512.png",
   "./icons/icon-maskable-192.png",
   "./icons/icon-maskable-512.png",
   "./fonts/GolosText-Medium.woff2",
   "./fonts/GolosText-SemiBold.woff2",
-  "./fonts/GolosText-Bold.woff2"
+  "./fonts/GolosText-Bold.woff2",
+  "./fonts/GolosText-ExtraBold.woff2"
 ];
 
 self.addEventListener("install", event => {
