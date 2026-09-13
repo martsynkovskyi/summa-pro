@@ -1,7 +1,7 @@
 (() => {
   "use strict";
 
-  const APP_VERSION = "2.5";
+  const APP_VERSION = "2.6";
   const STORAGE_KEY = "summaPropisyuSettingsV2";
   const HISTORY_KEY = "summaPropisyuHistoryV1";
   const MAX_HISTORY = 10;
@@ -35,7 +35,7 @@
   const aboveLineKicker = document.getElementById("aboveLineKicker");
   const fullLineTitle = document.getElementById("fullLineTitle");
   const aboveLineTitle = document.getElementById("aboveLineTitle");
-  const copyTargets = [...document.querySelectorAll(".copy-target")];
+  const copyTargets = [...document.querySelectorAll("[data-copy-key]")];
 
   const historySection = document.getElementById("historySection");
   const historyList = document.getElementById("historyList");
@@ -525,25 +525,18 @@
     return "Без НДС";
   }
 
-  function recommendedText(entry = current) {
-    if (entry.mode === "above") return entry.texts.above;
-    return entry.texts.full;
-  }
-
   function buildAllText(entry = current) {
     if (entry.mode === "none") {
       return [
         `Сумма: ${entry.texts.total}`,
-        "НДС: не начисляется",
-        `Формулировка: ${entry.texts.full}`
+        "НДС: не начисляется"
       ].join("\n");
     }
 
     return [
       `Сумма без НДС: ${entry.texts.base}`,
       `НДС ${entry.rate}%: ${entry.texts.vat}`,
-      `Сумма с НДС: ${entry.texts.total}`,
-      `Рекомендуемая формулировка: ${recommendedText(entry)}`
+      `Сумма с НДС: ${entry.texts.total}`
     ].join("\n");
   }
 
@@ -928,6 +921,7 @@
 
     copyTargets.forEach(target => {
       target.addEventListener("click", () => copyResult(target));
+      if (target.matches("button")) return;
       target.addEventListener("keydown", event => {
         if (event.key === "Enter" || event.key === " ") {
           event.preventDefault();

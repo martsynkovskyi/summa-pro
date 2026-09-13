@@ -48,6 +48,22 @@
     const none = app.calculateValues(100, 22, "none");
     test("Без НДС", close(none.base, 100) && close(none.vat, 0) && close(none.total, 100));
 
+    const copiedAbove = app.buildAllText({
+      valid: true,
+      rate: 22,
+      mode: "above",
+      texts: { base: "БАЗА", vat: "НДС", total: "ИТОГ", full: "ФРАЗА 1", above: "ФРАЗА 2" }
+    });
+    test("Общий расчет без формулировок", copiedAbove.includes("БАЗА") && copiedAbove.includes("НДС") && copiedAbove.includes("ИТОГ") && !copiedAbove.includes("ФРАЗА"));
+
+    const copiedNone = app.buildAllText({
+      valid: true,
+      rate: 22,
+      mode: "none",
+      texts: { base: "БАЗА", vat: "НДС", total: "ИТОГ", full: "ФРАЗА 1", above: "ФРАЗА 2" }
+    });
+    test("Общий расчет без НДС и без формулировки", copiedNone.includes("ИТОГ") && copiedNone.includes("не начисляется") && !copiedNone.includes("ФРАЗА"));
+
     const wordCases = [
       [0, "Ноль"], [1, "Один"], [2, "Два"], [5, "Пять"], [11, "Одиннадцать"],
       [21, "Двадцать один"], [101, "Сто один"], [1000, "Одна тысяча"], [2000, "Две тысячи"]

@@ -1,14 +1,14 @@
 "use strict";
 
 const CACHE_PREFIX = "summa-propisyu-";
-const CACHE_NAME = "summa-propisyu-v2.5-20260912";
+const CACHE_NAME = "summa-propisyu-v2.6-20260913";
 const OFFLINE_URL = "./index.html";
 const APP_SHELL = [
   "./index.html",
-  "./assets/styles-v2.5.css",
-  "./assets/app-v2.5.js",
-  "./assets/pwa-v2.5.css",
-  "./assets/pwa-v2.5.js",
+  "./assets/styles-v2.6.css",
+  "./assets/app-v2.6.js",
+  "./assets/pwa-v2.6.css",
+  "./assets/pwa-v2.6.js",
   "./favicon.svg",
   "./manifest.webmanifest",
   "./icons/icon-192.png",
