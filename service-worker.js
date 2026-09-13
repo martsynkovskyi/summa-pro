@@ -1,7 +1,7 @@
 "use strict";
 
 const CACHE_PREFIX = "summa-propisyu-";
-const CACHE_NAME = "summa-propisyu-v3.0-20260913-release8";
+const CACHE_NAME = "summa-propisyu-v3.0-20260913-release9";
 const OFFLINE_URL = "./index.html";
 const APP_SHELL = [
   "./index.html",
@@ -34,7 +34,7 @@ const APP_SHELL = [
   "./fonts/GolosText-Regular.woff2"
 ];
 const OPTIONAL_ASSETS = [
-  "./preview-v2.7.png",
+  "./preview-v3.0.png",
   "./apple-touch-icon.png",
   "./icons/icon-512.png",
   "./icons/icon-maskable-192.png",

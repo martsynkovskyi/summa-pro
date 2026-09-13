@@ -38,7 +38,7 @@
 ├── favicon.svg
 ├── apple-touch-icon.png
 ├── manifest.webmanifest
-├── preview-v2.7.png
+├── preview-v3.0.png
 ├── robots.txt
 ├── googlec6ae4ef8aa6b3cdf.html
 ├── yandex_e0d525dfb116be70.html
