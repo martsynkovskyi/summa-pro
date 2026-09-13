@@ -5021,7 +5021,7 @@ select,
 .result-copy-heading {
   width: 100%;
   display: grid;
-  grid-template-columns: 34px minmax(0, 1fr) 22px;
+  grid-template-columns: 34px minmax(0, 1fr) 30px;
   align-items: center;
   gap: 8px;
   margin: 0;
@@ -5081,9 +5081,9 @@ select,
 .phrase-heading-button {
   width: 100%;
   min-height: 40px;
-  display: flex;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 30px;
   align-items: center;
-  justify-content: space-between;
   gap: 10px;
   margin: 0;
   padding: 6px 8px;
@@ -5096,20 +5096,11 @@ select,
   transition: border-color .16s ease, background .16s ease, box-shadow .16s ease;
 }
 
-.phrase-heading-copy-icon,
-.phrase-heading-copy-icon img {
-  width: 22px;
-  height: 22px;
-  flex: 0 0 22px;
-}
-
-.phrase-heading-copy-icon {
-  overflow: hidden;
-  border-radius: 7px;
-  background: #f7f9fc;
-}
-
-.phrase-heading-copy-icon img {
+.copy-action-icon {
+  width: 30px;
+  height: 30px;
   display: block;
-  object-fit: cover;
+  object-fit: contain;
+  justify-self: end;
+  flex: 0 0 30px;
 }

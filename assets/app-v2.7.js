@@ -1010,7 +1010,7 @@
     button.setAttribute("aria-label", label);
 
     const icon = document.createElement("img");
-    icon.src = action === "copy" ? "assets/generated-icons/copy-v2.7.png" : "assets/generated-icons/trash-v2.7.png";
+    icon.src = action === "copy" ? "assets/generated-icons/copy-v3.0.png" : "assets/generated-icons/trash-v2.7.png";
     icon.alt = "";
     icon.setAttribute("aria-hidden", "true");
     button.appendChild(icon);

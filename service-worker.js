@@ -1,7 +1,7 @@
 "use strict";
 
 const CACHE_PREFIX = "summa-propisyu-";
-const CACHE_NAME = "summa-propisyu-v3.0-20260913-release4";
+const CACHE_NAME = "summa-propisyu-v3.0-20260913-release5";
 const OFFLINE_URL = "./index.html";
 const APP_SHELL = [
   "./index.html",
@@ -23,7 +23,7 @@ const APP_SHELL = [
   "./assets/generated-icons/vat-amount-v2.7.png",
   "./assets/generated-icons/total-amount-v2.7.png",
   "./assets/generated-icons/privacy-v2.7.png",
-  "./assets/generated-icons/copy-v2.7.png",
+  "./assets/generated-icons/copy-v3.0.png",
   "./assets/generated-icons/eraser-v2.7.png",
   "./assets/generated-icons/history-v2.7.png",
   "./assets/generated-icons/install-v2.7.png",
