@@ -1,7 +1,7 @@
 "use strict";
 
 const CACHE_PREFIX = "summa-propisyu-";
-const CACHE_NAME = "summa-propisyu-v3.0-20260913-release1";
+const CACHE_NAME = "summa-propisyu-v3.0-20260913-release2";
 const OFFLINE_URL = "./index.html";
 const APP_SHELL = [
   "./index.html",
