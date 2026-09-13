@@ -3,6 +3,7 @@
   const frame = document.getElementById("appFrame");
   const results = document.getElementById("results");
   const summary = document.getElementById("summary");
+  let started = false;
 
   function add(name, passed, detail = "") {
     const li = document.createElement("li");
@@ -12,13 +13,15 @@
     return passed;
   }
 
-  frame.addEventListener("load", () => {
+  function runTests() {
+    if (started) return;
     const app = frame.contentWindow.__SUMMA_APP__;
     if (!app) {
       summary.textContent = "Приложение не загрузилось";
       summary.className = "summary fail";
       return;
     }
+    started = true;
 
     let passed = 0;
     let total = 0;
@@ -83,5 +86,8 @@
 
     summary.textContent = `Пройдено ${passed} из ${total} тестов`;
     summary.className = `summary ${passed === total ? "ok" : "fail"}`;
-  });
+  }
+
+  frame.addEventListener("load", runTests);
+  if (frame.contentDocument?.readyState === "complete") queueMicrotask(runTests);
 })();
