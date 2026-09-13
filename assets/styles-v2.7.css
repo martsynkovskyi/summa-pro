@@ -5021,7 +5021,7 @@ select,
 .result-copy-heading {
   width: 100%;
   display: grid;
-  grid-template-columns: 34px minmax(0, 1fr) 30px;
+  grid-template-columns: 34px minmax(0, 1fr) auto 30px;
   align-items: center;
   gap: 8px;
   margin: 0;
@@ -5082,7 +5082,7 @@ select,
   width: 100%;
   min-height: 40px;
   display: grid;
-  grid-template-columns: minmax(0, 1fr) 30px;
+  grid-template-columns: minmax(0, 1fr) auto 30px;
   align-items: center;
   gap: 10px;
   margin: 0;
@@ -5103,4 +5103,52 @@ select,
   object-fit: contain;
   justify-self: end;
   flex: 0 0 30px;
+}
+
+.result-copy-heading .summary-label,
+.phrase-heading-button > span:first-child {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.copy-state-label {
+  max-width: 0;
+  overflow: hidden;
+  color: #0f6539;
+  font-family: var(--font-ui);
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 1.2;
+  opacity: 0;
+  white-space: nowrap;
+  transition: max-width .16s ease, opacity .16s ease;
+}
+
+.result-copy-heading[data-copied="true"] .copy-state-label,
+.phrase-heading-button[data-copied="true"] .copy-state-label {
+  max-width: 90px;
+  opacity: 1;
+}
+
+/* v3.0.2: единая трехколоночная сетка параметров */
+@media (min-width: 701px) {
+  .form-section-primary {
+    grid-template-areas:
+      "legend legend legend"
+      "amount rate rate"
+      "mode mode mode";
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    column-gap: 14px;
+  }
+
+  .field-mode .segmented-control,
+  #rateField .rate-switch {
+    column-gap: 14px;
+  }
+
+  #vatReasonField .reason-switch {
+    column-gap: 8px;
+  }
 }
