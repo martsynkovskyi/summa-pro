@@ -223,20 +223,20 @@
         </div>
 
         <div class="summary-grid" aria-label="Итоги расчета">
-          <article class="summary-card summary-card-blue copy-target" data-copy-key="base" tabindex="0" role="button" aria-label="Скопировать сумму без НДС">
-            <div class="summary-card-top"><span class="summary-card-icon" aria-hidden="true"><img src="assets/generated-icons/base-amount-v2.7.png" alt=""></span><span class="summary-label">Сумма без НДС</span><span class="summary-copy-icon" aria-hidden="true"><img src="assets/generated-icons/copy-v2.7.png" alt=""></span></div>
+          <article class="summary-card summary-card-blue">
+            <button class="summary-card-top result-copy-heading" type="button" data-copy-key="base" aria-label="Скопировать сумму без НДС"><span class="summary-card-icon" aria-hidden="true"><img src="assets/generated-icons/base-amount-v2.7.png" alt=""></span><span class="summary-label">Сумма без НДС</span><span class="summary-copy-icon" aria-hidden="true"><img src="assets/generated-icons/copy-v2.7.png" alt=""></span></button>
             <strong class="summary-number" id="baseAmount">0,00 ₽</strong>
             <span class="summary-words" id="baseLine">0 (Ноль) рублей 00 копеек</span>
           </article>
 
-          <article class="summary-card summary-card-green copy-target" data-copy-key="vat" tabindex="0" role="button" aria-label="Скопировать сумму НДС">
-            <div class="summary-card-top"><span class="summary-card-icon" aria-hidden="true"><img src="assets/generated-icons/vat-amount-v2.7.png" alt=""></span><span class="summary-label">НДС</span><span class="summary-copy-icon" aria-hidden="true"><img src="assets/generated-icons/copy-v2.7.png" alt=""></span></div>
+          <article class="summary-card summary-card-green">
+            <button class="summary-card-top result-copy-heading" type="button" data-copy-key="vat" aria-label="Скопировать сумму НДС"><span class="summary-card-icon" aria-hidden="true"><img src="assets/generated-icons/vat-amount-v2.7.png" alt=""></span><span class="summary-label">НДС</span><span class="summary-copy-icon" aria-hidden="true"><img src="assets/generated-icons/copy-v2.7.png" alt=""></span></button>
             <strong class="summary-number" id="vatAmount">0,00 ₽</strong>
             <span class="summary-words" id="vatLine">0 (Ноль) рублей 00 копеек</span>
           </article>
 
-          <article class="summary-card summary-card-slate copy-target" data-copy-key="total" tabindex="0" role="button" aria-label="Скопировать сумму с НДС">
-            <div class="summary-card-top"><span class="summary-card-icon" aria-hidden="true"><img src="assets/generated-icons/total-amount-v2.7.png" alt=""></span><span class="summary-label">Сумма с НДС</span><span class="summary-copy-icon" aria-hidden="true"><img src="assets/generated-icons/copy-v2.7.png" alt=""></span></div>
+          <article class="summary-card summary-card-slate">
+            <button class="summary-card-top result-copy-heading" type="button" data-copy-key="total" aria-label="Скопировать сумму с НДС"><span class="summary-card-icon" aria-hidden="true"><img src="assets/generated-icons/total-amount-v2.7.png" alt=""></span><span class="summary-label">Сумма с НДС</span><span class="summary-copy-icon" aria-hidden="true"><img src="assets/generated-icons/copy-v2.7.png" alt=""></span></button>
             <strong class="summary-number" id="totalAmount">0,00 ₽</strong>
             <span class="summary-words" id="totalLine">0 (Ноль) рублей 00 копеек</span>
           </article>
@@ -246,15 +246,13 @@
           <div class="phrase-section-heading"><h3>Формулировки для документов</h3></div>
 
           <article class="phrase-card phrase-card-primary" id="fullLineCard">
-            <div class="phrase-card-top"><h4 id="fullLineTitle">В том числе НДС</h4></div>
+            <div class="phrase-card-top"><h4><button class="phrase-heading-button phrase-copy-button" type="button" data-copy-key="full" aria-label="Скопировать формулировку в том числе НДС"><span id="fullLineTitle">В том числе НДС</span><span class="phrase-heading-copy-icon" aria-hidden="true"><img src="assets/generated-icons/copy-v2.7.png" alt=""></span></button></h4></div>
             <p id="fullLineText"></p>
-            <div class="phrase-card-actions"><button class="copy-chip phrase-copy-button" type="button" data-copy-key="full" aria-label="Скопировать формулировку в том числе НДС"><img src="assets/generated-icons/copy-v2.7.png" alt="" aria-hidden="true"><span>Копировать</span></button></div>
           </article>
 
           <article class="phrase-card" id="aboveLineCard">
-            <div class="phrase-card-top"><h4 id="aboveLineTitle">Кроме того НДС</h4></div>
+            <div class="phrase-card-top"><h4><button class="phrase-heading-button phrase-copy-button" type="button" data-copy-key="above" aria-label="Скопировать формулировку кроме того НДС"><span id="aboveLineTitle">Кроме того НДС</span><span class="phrase-heading-copy-icon" aria-hidden="true"><img src="assets/generated-icons/copy-v2.7.png" alt=""></span></button></h4></div>
             <p id="aboveLineText"></p>
-            <div class="phrase-card-actions"><button class="copy-chip phrase-copy-button" type="button" data-copy-key="above" aria-label="Скопировать формулировку кроме того НДС"><img src="assets/generated-icons/copy-v2.7.png" alt="" aria-hidden="true"><span>Копировать</span></button></div>
           </article>
         </div>
 

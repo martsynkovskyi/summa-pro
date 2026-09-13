@@ -4983,3 +4983,133 @@ select,
     height: 28px;
   }
 }
+
+/* v3.0.1: ровные контролы, умеренная ширина и копирование из заголовков */
+@media (min-width: 701px) {
+  .amount-wrap,
+  #amount,
+  .rate-option > span {
+    height: 50px;
+    min-height: 50px;
+  }
+}
+
+@media (min-width: 2200px) {
+  .app-shell {
+    width: min(2140px, calc(100% - 96px));
+  }
+}
+
+@media (min-width: 3300px) {
+  .app-shell {
+    width: min(2600px, calc(100% - 160px));
+  }
+}
+
+.form-footer-row .privacy-note strong,
+.form-footer-row .button {
+  font-size: var(--type-base) !important;
+  line-height: 1.2;
+}
+
+.summary-card {
+  cursor: default;
+  -webkit-user-select: text;
+  user-select: text;
+}
+
+.result-copy-heading {
+  width: 100%;
+  display: grid;
+  grid-template-columns: 34px minmax(0, 1fr) 22px;
+  align-items: center;
+  gap: 8px;
+  margin: 0;
+  padding: 5px 6px;
+  color: inherit;
+  border: 1px solid #ccdced;
+  border-radius: 9px;
+  background: #f4f8fd;
+  cursor: pointer;
+  text-align: left;
+  transition: border-color .16s ease, background .16s ease, box-shadow .16s ease;
+}
+
+.result-copy-heading .summary-label,
+.phrase-heading-button {
+  font-family: var(--font-ui) !important;
+  font-size: var(--type-base) !important;
+  font-weight: 600;
+  line-height: 1.2;
+}
+
+.result-copy-heading:hover,
+.phrase-heading-button:hover {
+  border-color: #bdd0e5;
+  background: #edf5ff;
+}
+
+.result-copy-heading:focus-visible,
+.phrase-heading-button:focus-visible {
+  outline: none;
+  box-shadow: var(--focus);
+}
+
+.result-copy-heading[data-copied="true"],
+.phrase-heading-button[data-copied="true"] {
+  color: #0f6539;
+  border-color: #89bfa2;
+  background: #edf8f2;
+}
+
+.summary-card > .summary-number,
+.summary-card > .summary-words {
+  cursor: text;
+  -webkit-user-select: text;
+  user-select: text;
+}
+
+.phrase-card-top,
+.phrase-card-top h4 {
+  width: 100%;
+}
+
+.phrase-card-top h4 {
+  margin: 0;
+}
+
+.phrase-heading-button {
+  width: 100%;
+  min-height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin: 0;
+  padding: 6px 8px;
+  color: #264361;
+  border: 1px solid #ccdced;
+  border-radius: 9px;
+  background: #f4f8fd;
+  cursor: pointer;
+  text-align: left;
+  transition: border-color .16s ease, background .16s ease, box-shadow .16s ease;
+}
+
+.phrase-heading-copy-icon,
+.phrase-heading-copy-icon img {
+  width: 22px;
+  height: 22px;
+  flex: 0 0 22px;
+}
+
+.phrase-heading-copy-icon {
+  overflow: hidden;
+  border-radius: 7px;
+  background: #f7f9fc;
+}
+
+.phrase-heading-copy-icon img {
+  display: block;
+  object-fit: cover;
+}
