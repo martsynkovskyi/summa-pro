@@ -127,7 +127,7 @@
     if (!("serviceWorker" in navigator) || !secureContext) return;
 
     try {
-      const registration = await navigator.serviceWorker.register("./service-worker.js?v=2.7", {
+      const registration = await navigator.serviceWorker.register("./service-worker.js?v=3.0", {
         scope: "./",
         updateViaCache: "none"
       });

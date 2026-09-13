@@ -1,7 +1,7 @@
 (() => {
   "use strict";
 
-  const APP_VERSION = "2.7";
+  const APP_VERSION = "3.0";
   const STORAGE_KEY = "summaPropisyuSettingsV2";
   const HISTORY_KEY = "summaPropisyuHistoryV1";
   const MAX_HISTORY = 10;
