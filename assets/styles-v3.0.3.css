@@ -5622,6 +5622,13 @@ select,
   hyphens: auto;
 }
 
+.phrase-result-item .phrase-card,
+.phrase-result-item .phrase-card > p {
+  cursor: pointer;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
 .summary-result-item,
 .phrase-result-item {
   min-width: 0;
