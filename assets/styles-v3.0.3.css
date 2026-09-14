@@ -5599,6 +5599,21 @@ select,
   padding-bottom: 0;
 }
 
+.footer,
+.footer .footer-item,
+.footer .footer-item > div,
+.footer .footer-item > span,
+.footer .footer-install,
+.footer .footer-install span {
+  font-family: var(--font-ui) !important;
+  font-size: 13px !important;
+  font-weight: 400 !important;
+  font-style: normal !important;
+  line-height: 1.4 !important;
+  letter-spacing: 0 !important;
+  text-transform: none !important;
+}
+
 .summary-result-item,
 .phrase-result-item {
   min-width: 0;
