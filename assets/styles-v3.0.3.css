@@ -5614,6 +5614,14 @@ select,
   text-transform: none !important;
 }
 
+.summary-words-field .summary-words,
+.phrase-result-item .phrase-card > p {
+  width: 100%;
+  text-align: justify;
+  text-align-last: left;
+  hyphens: auto;
+}
+
 .summary-result-item,
 .phrase-result-item {
   min-width: 0;
