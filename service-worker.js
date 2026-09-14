@@ -1,12 +1,12 @@
 "use strict";
 
 const CACHE_PREFIX = "summa-propisyu-";
-const CACHE_NAME = "summa-propisyu-v3.0-20260913-release10";
+const CACHE_NAME = "summa-propisyu-v3.0-20260914-release14";
 const OFFLINE_URL = "./index.html";
 const APP_SHELL = [
   "./index.html",
-  "./assets/styles-v3.0.2.css",
-  "./assets/app-v3.0.1.js",
+  "./assets/styles-v3.0.3.css",
+  "./assets/app-v3.0.2.js",
   "./assets/pwa-v2.7.css",
   "./assets/pwa-v2.7.js",
   "./assets/brand/summa-logo-v2.7.png",
@@ -28,17 +28,17 @@ const APP_SHELL = [
   "./assets/generated-icons/history-v2.7.png",
   "./assets/generated-icons/install-v2.7.png",
   "./assets/generated-icons/trash-v2.7.png",
-  "./favicon.svg",
+  "./favicon-v3.0.1.svg",
   "./manifest.webmanifest",
-  "./icons/icon-192.png",
+  "./icons/icon-192-v3.0.1.png",
   "./fonts/GolosText-Regular.woff2"
 ];
 const OPTIONAL_ASSETS = [
   "./preview-v3.0.png",
-  "./apple-touch-icon.png",
-  "./icons/icon-512.png",
-  "./icons/icon-maskable-192.png",
-  "./icons/icon-maskable-512.png",
+  "./apple-touch-icon-v3.0.1.png",
+  "./icons/icon-512-v3.0.1.png",
+  "./icons/icon-maskable-192-v3.0.1.png",
+  "./icons/icon-maskable-512-v3.0.1.png",
   "./fonts/GolosText-Medium.woff2",
   "./fonts/GolosText-SemiBold.woff2",
   "./fonts/GolosText-Bold.woff2",
