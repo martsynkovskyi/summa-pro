@@ -1,48 +1,48 @@
 "use strict";
 
 const CACHE_PREFIX = "summa-propisyu-";
-const CACHE_NAME = "summa-propisyu-v3.1-20260918-release22";
+const CACHE_NAME = "summa-propisyu-v3.1-20260918-release23";
 const OFFLINE_URL = "./index.html";
 const APP_SHELL = [
   "./index.html",
-  "./assets/styles-v3.0.3.css",
-  "./assets/theme-v3.1.css",
-  "./assets/app-v3.0.2.js",
-  "./assets/theme-v3.1.js",
-  "./assets/about-v3.1.js",
+  "./assets/styles.css",
+  "./assets/theme.css",
+  "./assets/app.js",
+  "./assets/theme.js",
+  "./assets/about.js",
   "./README.md",
-  "./assets/pwa-v2.7.css",
-  "./assets/pwa-v2.7.js",
-  "./assets/brand/summa-logo-v3.1.png",
-  "./assets/brand/summa-logo-dark-v3.1.png",
-  "./assets/brand/summa-hero-v2.7.png",
-  "./assets/reason-icons/usn-v2.7.png",
-  "./assets/reason-icons/npd-v2.7.png",
-  "./assets/reason-icons/person-v3.1.png",
-  "./assets/generated-icons/calculator-v3.1.png",
-  "./assets/generated-icons/results-v3.1.png",
-  "./assets/mode-icons/vat-included-v3.1.png",
-  "./assets/mode-icons/vat-above-v3.1.png",
-  "./assets/mode-icons/no-vat-v3.1.png",
-  "./assets/generated-icons/base-amount-v3.1.png",
-  "./assets/generated-icons/vat-amount-v3.1.png",
-  "./assets/generated-icons/total-amount-v3.1.png",
-  "./assets/generated-icons/privacy-v3.1.png",
-  "./assets/generated-icons/copy-v3.0.png",
-  "./assets/generated-icons/history-v3.1.png",
-  "./assets/generated-icons/install-v3.1.png",
-  "./assets/generated-icons/trash-v2.7.png",
-  "./favicon-v3.0.1.svg",
+  "./assets/pwa.css",
+  "./assets/pwa.js",
+  "./assets/brand/summa-logo.png",
+  "./assets/brand/summa-logo-dark.png",
+  "./assets/brand/summa-hero.png",
+  "./assets/reason-icons/usn.png",
+  "./assets/reason-icons/npd.png",
+  "./assets/reason-icons/person.png",
+  "./assets/generated-icons/calculator.png",
+  "./assets/generated-icons/results.png",
+  "./assets/mode-icons/vat-included.png",
+  "./assets/mode-icons/vat-above.png",
+  "./assets/mode-icons/no-vat.png",
+  "./assets/generated-icons/base-amount.png",
+  "./assets/generated-icons/vat-amount.png",
+  "./assets/generated-icons/total-amount.png",
+  "./assets/generated-icons/privacy.png",
+  "./assets/generated-icons/copy.png",
+  "./assets/generated-icons/history.png",
+  "./assets/generated-icons/install.png",
+  "./assets/generated-icons/trash.png",
+  "./favicon.svg",
   "./manifest.webmanifest",
-  "./icons/icon-192-v3.0.1.png",
+  "./icons/icon-192.png",
   "./fonts/GolosText-Regular.woff2"
 ];
 const OPTIONAL_ASSETS = [
-  "./preview-v3.0.png",
-  "./apple-touch-icon-v3.0.1.png",
-  "./icons/icon-512-v3.0.1.png",
-  "./icons/icon-maskable-192-v3.0.1.png",
-  "./icons/icon-maskable-512-v3.0.1.png",
+  "./preview.png",
+  "./apple-touch-icon.png",
+  "./icons/icon-512.png",
+  "./icons/icon-maskable-192.png",
+  "./icons/icon-maskable-512.png",
   "./fonts/GolosText-Medium.woff2",
   "./fonts/GolosText-SemiBold.woff2",
   "./fonts/GolosText-Bold.woff2",
@@ -99,6 +99,19 @@ function updateCache(request) {
   });
 }
 
+async function networkFirstCode(request) {
+  try {
+    const response = await fetch(new Request(request, { cache: "no-cache" }));
+    if (response.ok) {
+      const cache = await caches.open(CACHE_NAME);
+      await cache.put(request, response.clone());
+    }
+    return response;
+  } catch (_) {
+    return (await caches.match(request, { ignoreSearch: true })) || Response.error();
+  }
+}
+
 self.addEventListener("fetch", event => {
   const request = event.request;
   if (request.method !== "GET") return;
@@ -108,6 +121,12 @@ self.addEventListener("fetch", event => {
 
   if (request.mode === "navigate") {
     event.respondWith(networkFirstNavigation(request));
+    return;
+  }
+
+  if (request.destination === "script" || request.destination === "style" ||
+      request.destination === "manifest" || url.pathname.endsWith("/README.md")) {
+    event.respondWith(networkFirstCode(request));
     return;
   }
 

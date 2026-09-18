@@ -905,10 +905,14 @@
         !isAllowed("rate", rate) || !isAllowed("mode", mode) ||
         !isAllowed("format", format) || !isAllowed("vatReason", vatReason)) return null;
 
+    const savedTimestamp = Number(item.timestamp);
+    const timestamp = Number.isFinite(savedTimestamp) && Number.isFinite(new Date(savedTimestamp).getTime())
+      ? savedTimestamp
+      : Date.now();
     const values = calculateValues(input, Number(rate), mode);
     return {
       id: typeof item.id === "string" ? item.id : `${Date.now()}-${Math.random().toString(36).slice(2, 8)}`,
-      timestamp: Number.isFinite(Number(item.timestamp)) ? Number(item.timestamp) : Date.now(),
+      timestamp,
       amount: inputMoney(input),
       input,
       rate: Number(rate),
@@ -1011,7 +1015,7 @@
     button.setAttribute("aria-label", label);
 
     const icon = document.createElement("img");
-    icon.src = action === "copy" ? "assets/generated-icons/copy-v3.0.png" : "assets/generated-icons/trash-v2.7.png";
+    icon.src = action === "copy" ? "assets/generated-icons/copy.png" : "assets/generated-icons/trash.png";
     icon.alt = "";
     icon.setAttribute("aria-hidden", "true");
     button.appendChild(icon);

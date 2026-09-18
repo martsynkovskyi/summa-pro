@@ -1,0 +1,6 @@
+# Development-only checks and release notes are kept locally.
+/tests.html
+/assets/tests.css
+/assets/tests.js
+/developer-reports/
+/qa/
