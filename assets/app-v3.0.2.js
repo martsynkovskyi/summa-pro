@@ -1,7 +1,7 @@
 (() => {
   "use strict";
 
-  const APP_VERSION = "3.0";
+  const APP_VERSION = "3.1";
   const STORAGE_KEY = "summaPropisyuSettingsV2";
   const HISTORY_KEY = "summaPropisyuHistoryV1";
   const MAX_HISTORY = 10;
@@ -17,7 +17,8 @@
   const vatReasonChoices = [...document.querySelectorAll('input[name="vatReasonChoice"]')];
   const rateField = document.getElementById("rateField");
   const vatReasonField = document.getElementById("vatReasonField");
-  const resetButton = document.getElementById("resetBtn");
+  const clearAmountButton = document.getElementById("clearAmountBtn");
+  const undoAmountButton = document.getElementById("undoAmountBtn");
   const copyAllButton = document.getElementById("copyAllBtn");
 
   const baseLine = document.getElementById("baseLine");
@@ -41,9 +42,6 @@
   const historyEmpty = document.getElementById("historyEmpty");
   const historyCount = document.getElementById("historyCount");
   const clearHistoryButton = document.getElementById("clearHistoryBtn");
-
-  const saveIndicator = document.getElementById("saveIndicator");
-  const saveStatusText = document.getElementById("saveStatusText");
 
   const toast = document.getElementById("toast");
   const toastMessage = document.getElementById("toastMessage");
@@ -74,7 +72,8 @@
   let saveTimer = 0;
   let toastTimer = 0;
   let copiedTimer = 0;
-  let undoSnapshot = null;
+  let undoAmount = null;
+  let undoAmountTimer = 0;
   let undoHistory = null;
   let hasUserInput = false;
   let history = [];
@@ -101,15 +100,6 @@
     const safeValue = allowedSettings[name]?.includes(String(value)) ? String(value) : defaults[name];
     const input = document.querySelector(`input[name="${name}"][value="${safeValue}"]`);
     if (input) input.checked = true;
-  }
-
-  function setSaveState(state, text) {
-    saveIndicator.dataset.state = state;
-    saveStatusText.textContent = text;
-  }
-
-  function formatTime(date = new Date()) {
-    return new Intl.DateTimeFormat("ru-RU", { hour: "2-digit", minute: "2-digit" }).format(date);
   }
 
   function formatHistoryTime(timestamp) {
@@ -172,34 +162,28 @@
         restored = true;
       }
     } catch (error) {
-      console.warn("Не удалось восстановить черновик:", error);
-      setSaveState("error", "Сохранение недоступно");
+      console.warn("Не удалось восстановить параметры:", error);
     }
 
     if (!restored) {
       restoreSnapshot(defaults, { save: false });
       hasUserInput = false;
-      setSaveState("idle", "Черновик не изменен");
     } else {
       hasUserInput = false;
-      setSaveState("saved", "Черновик восстановлен");
     }
   }
 
   function saveSettings() {
     try {
       localStorage.setItem(STORAGE_KEY, JSON.stringify(snapshot()));
-      setSaveState("saved", `Сохранено в ${formatTime()}`);
     } catch (error) {
-      console.warn("Не удалось сохранить черновик:", error);
-      setSaveState("error", "Сохранение недоступно");
+      console.warn("Не удалось сохранить параметры:", error);
     }
   }
 
   function scheduleSave() {
     if (!hasUserInput) return;
     clearTimeout(saveTimer);
-    setSaveState("saving", "Сохраняем…");
     saveTimer = window.setTimeout(saveSettings, SAVE_DELAY);
   }
 
@@ -861,39 +845,33 @@
     toastTimer = window.setTimeout(hideToast, duration);
   }
 
-  function hasMeaningfulContent() {
-    const state = snapshot();
-    return (state.amount.trim() !== "" && state.amount.trim() !== "0") ||
-      state.rate !== defaults.rate || state.mode !== defaults.mode ||
-      state.format !== defaults.format || state.vatReason !== defaults.vatReason;
+  function hideAmountUndo() {
+    clearTimeout(undoAmountTimer);
+    undoAmount = null;
+    undoAmountButton.hidden = true;
   }
 
-  function clearForm() {
-    undoSnapshot = snapshot();
-    clearTimeout(saveTimer);
+  function clearAmount() {
+    if (!amountInput.value) return;
+    undoAmount = amountInput.value;
     amountInput.value = "";
-    setCheckedValue("rate", defaults.rate);
-    setCheckedValue("mode", defaults.mode);
-    formatSelect.value = defaults.format;
-    vatReasonSelect.value = defaults.vatReason;
-    syncCustomSelects();
-    syncVatReasonButtons();
-    hasUserInput = false;
-    try {
-      localStorage.removeItem(STORAGE_KEY);
-      setSaveState("idle", "Черновик очищен");
-    } catch (error) {
-      console.warn("Не удалось очистить черновик:", error);
-      setSaveState("error", "Сохранение недоступно");
-    }
+    hasUserInput = true;
+    scheduleSave();
     calculate();
     amountInput.focus();
-    showToast("Форма очищена.", {
-      tone: "warn",
-      actionLabel: "Отменить",
-      onAction: () => { restoreSnapshot(undoSnapshot); showToast("Данные восстановлены."); },
-      duration: 8000
-    });
+    undoAmountButton.hidden = false;
+    clearTimeout(undoAmountTimer);
+    undoAmountTimer = window.setTimeout(hideAmountUndo, 10000);
+  }
+
+  function restoreAmount() {
+    if (undoAmount === null) return;
+    amountInput.value = undoAmount;
+    hideAmountUndo();
+    hasUserInput = true;
+    scheduleSave();
+    calculate();
+    amountInput.focus();
   }
 
   function historySignature(entry) {
@@ -1115,6 +1093,7 @@
   }
 
   function onAmountInput() {
+    hideAmountUndo();
     hasUserInput = true;
     scheduleSave();
     calculate();
@@ -1174,11 +1153,13 @@
       });
     });
 
-    copyAllButton.addEventListener("click", () => copyAll());
-    resetButton.addEventListener("click", () => {
-      if (hasMeaningfulContent()) clearForm();
-      else showToast("Форма уже пустая.", { tone: "warn" });
+    copyFeedbackTargets.forEach(target => {
+      target.title = "Нажмите, чтобы скопировать";
     });
+
+    copyAllButton.addEventListener("click", () => copyAll());
+    clearAmountButton.addEventListener("click", clearAmount);
+    undoAmountButton.addEventListener("click", restoreAmount);
     clearHistoryButton.addEventListener("click", clearHistory);
     toastClose.addEventListener("click", hideToast);
 
